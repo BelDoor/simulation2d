@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>by.darafeyeu</groupId>
-    <artifactId>simulation</artifactId>
+    <artifactId>simulation2d</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
