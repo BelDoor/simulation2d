@@ -6,6 +6,11 @@ public class Coordinate {
     private final Integer length;
     private final Integer height;
 
+    @Override
+    public String toString() {
+        return String.format("Coordinate:\nLength %d \nHeight %d", length, height);
+    }
+
     public Coordinate(Integer length, Integer height) {
         this.length = length;
         this.height = height;
