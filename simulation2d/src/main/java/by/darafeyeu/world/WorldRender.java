@@ -11,6 +11,7 @@ public class WorldRender {
     public static final String EMPTY_CELL = "🏻";
     public static final String SPRITE_RABBIT = "\uD83D\uDC30";
     public static final String SPRITE_ROCK = "⛰";
+    public static final String SPRITE_GRASS = "\uD83C\uDF3F";
 
     //убрать могичиские числа
     //реализовать через StringBilder
@@ -45,6 +46,8 @@ public class WorldRender {
                 return SPRITE_RABBIT;
             case ("Rock"):
                 return SPRITE_ROCK;
+            case ("Grass"):
+                return SPRITE_GRASS;
             default:
                 throw new IllegalStateException("Unexpected value: " + nameEntity);
         }

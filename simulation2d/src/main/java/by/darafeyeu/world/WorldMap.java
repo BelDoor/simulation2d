@@ -31,6 +31,9 @@ public class WorldMap {
         this.sizeHeight = height;
     }
 
+    public void coordinateEntity(Entity entity){
+
+    }
 
     public void stepEntityInMap(Coordinate currentCoordinate, Coordinate nextCoordinate)
             throws InvalidCoordinateException, CellException, OutOfWorldBoundsException, InvalidEntityException {

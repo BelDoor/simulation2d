@@ -1,6 +1,6 @@
 package by.darafeyeu.nature.animals;
 
-public class Rabbit extends Animals {
+public class Rabbit extends Animal {
     public static final int SPEED_STEP = 5;
 
     public Rabbit (){
@@ -10,5 +10,7 @@ public class Rabbit extends Animals {
     public void makeStep(){
 
     }
+
+
 
 }
