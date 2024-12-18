@@ -6,6 +6,7 @@ import by.darafeyeu.Exception.InvalidEntityException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.algoritm.BreadthFirstSearch;
 import by.darafeyeu.coordinate.Coordinate;
+import by.darafeyeu.coordinate.CoordinateForAlgoritm;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.Rock;
 import by.darafeyeu.nature.animals.Rabbit;
@@ -28,13 +29,13 @@ public class Main {
 
         try {
             worldMap.putFigure(new Coordinate(0, 2), new Rabbit());
-            //     worldMap.putFigure(new Coordinate(4, 5), new Grass());
+            //   worldMap.putFigure(new Coordinate(4, 5), new Grass());
             worldMap.putFigure(new Coordinate(1, 0), new Rock());
             worldMap.putFigure(new Coordinate(1, 1), new Rock());
             worldMap.putFigure(new Coordinate(1, 2), new Rock());
             worldMap.putFigure(new Coordinate(1, 3), new Rock());
             worldMap.putFigure(new Coordinate(1, 4), new Rock());
-            worldMap.putFigure(new Coordinate(1, 5), new Rock());
+            // worldMap.putFigure(new Coordinate(1, 5), new Rock());
             worldMap.putFigure(new Coordinate(1, 6), new Rock());
             worldMap.putFigure(new Coordinate(1, 7), new Rock());
             worldMap.putFigure(new Coordinate(1, 8), new Rock());
