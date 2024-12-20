@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
+//создавать чере сингелтон
 public class WorldMap {
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
     private static final int DEFAULT_LENGTH = 9;
@@ -31,19 +33,17 @@ public class WorldMap {
         this.sizeHeight = height;
     }
 
-    public void coordinateEntity(Entity entity){
+    //метод для поиска кординаты по сущности
+    public Coordinate getCoordinateEntity(Entity entity) throws InvalidCoordinateException {
+        Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
+        for (Map.Entry<Coordinate, Entity> pair : entryLocationEntityMap) {
+            if (entity.equals(pair.getValue())) {
+              return pair.getKey();
+            }
+        }
+        throw new InvalidCoordinateException("Empty coordinate");
     }
-
-    public void stepEntityInMap(Coordinate currentCoordinate, Coordinate nextCoordinate)
-            throws InvalidCoordinateException, CellException, OutOfWorldBoundsException, InvalidEntityException {
-        isOccupiedCellInWorld(currentCoordinate);
-        isFreeCellInWorld(nextCoordinate);
-        Entity currentEntity = getEntity(currentCoordinate);
-        removeEntity(currentCoordinate);
-        putFigure(nextCoordinate, currentEntity);
-    }
-
 
     public Entity getEntity(Coordinate currentCoordinate) throws CellException,
             OutOfWorldBoundsException, InvalidCoordinateException {
