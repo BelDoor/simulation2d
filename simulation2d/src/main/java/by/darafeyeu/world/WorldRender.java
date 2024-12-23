@@ -4,6 +4,7 @@ import by.darafeyeu.Exception.CellException;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
+import by.darafeyeu.nature.Entity;
 
 public class WorldRender {
 
@@ -13,6 +14,7 @@ public class WorldRender {
     public static final String SPRITE_ROCK = "⛰";
     public static final String SPRITE_GRASS = "\uD83C\uDF3F";
     public static final String SPRITE_BEAR = "\uD83D\uDC3B";
+    public static final String SPRITE_TREE = "\uD83C\uDF33";
 
 
     //убрать могичиские числа
@@ -27,7 +29,8 @@ public class WorldRender {
                     line += getSpriteForEmptySquare(coordinates);
                 } else {
                     try {
-                        line += getEntitySprite(world.getEntity(coordinates).getClass().getSimpleName());
+                        Entity entity = world.getEntity(coordinates);
+                        line += entity.getClass().getSimpleName();
                     } catch (InvalidCoordinateException e) {
                         line += getSpriteForEmptySquare(coordinates);
                     } catch (OutOfWorldBoundsException e) {
@@ -50,6 +53,8 @@ public class WorldRender {
                 return SPRITE_ROCK;
             case ("Grass"):
                 return SPRITE_GRASS;
+            case ("Tree"):
+                return SPRITE_TREE;
             case ("Bear"):
                 return SPRITE_BEAR;
             default:
