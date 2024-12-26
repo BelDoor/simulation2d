@@ -12,16 +12,12 @@ public class Bear extends Animal {
 
 
     public Bear(AlgoritmSearchPath algoritm) {
-        initialization(algoritm);
-    }
-
-    private void initialization(AlgoritmSearchPath algoritm){
-        setAlgoritmSearchPath(algoritm);
-        setCurrentHP(START_HP);
-        setSpeedStep(SPEED_STEP);
-        setTargetFood(TARGET_FOOD);
-        setMaxHP(MAX_HP);
-        setDefensePoint(DEFENSE_POINT);
-        setPowerHit(POWER_HIT);
+        super.algoritmSearchPath = algoritm;
+        super.currentHP = START_HP;
+        super.speedStep = SPEED_STEP;
+        super.targetFood = TARGET_FOOD;
+        super.maxHP = MAX_HP;
+        super.defensePoint = DEFENSE_POINT;
+        super.powerHit = POWER_HIT;
     }
 }

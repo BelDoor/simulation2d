@@ -1,17 +1,21 @@
 package by.darafeyeu.world;
 
 import by.darafeyeu.Exception.CellException;
+import by.darafeyeu.Exception.FreeCell;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.InvalidEntityException;
+import by.darafeyeu.Exception.OccupiedCell;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.check_action.CheckAction;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +27,8 @@ public class WorldMap {
     private static final int DEFAULT_LENGTH = 9;
     private static final int DEFAULT_HEIGHT = 9;
     private static final int START_COORDINATE = 0;
+
+    private Set<Coordinate> tracers = new HashSet<>();
 
     private int sizeLength;
     private int sizeHeight;
@@ -44,6 +50,26 @@ public class WorldMap {
         }
         this.sizeLength = length;
         this.sizeHeight = height;
+    }
+
+    public void cleanTracers() {
+        tracers.clear();
+    }
+
+    public void setTracers(List<Coordinate> allSteps) {
+        for (int i = 0; i < allSteps.size(); i++) {
+            Coordinate coordinate = allSteps.get(i);
+
+            if (!tracers.contains(coordinate)) {
+                tracers.add(coordinate);
+            }
+        }
+    }
+
+    protected Set<Coordinate> getTracers() {
+        Set<Coordinate> coordinates = new HashSet<>();
+        coordinates.addAll(tracers);
+        return coordinates;
     }
 
     public Coordinate emptyRandomCoordinate() {
@@ -73,20 +99,22 @@ public class WorldMap {
         Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
         for (Map.Entry<Coordinate, Entity> pair : entryLocationEntityMap) {
-            if (entity.equals(pair.getValue())) {
+            if (entity == (pair.getValue())) {
                 return pair.getKey();
             }
         }
         throw new InvalidCoordinateException("Empty coordinate");
     }
 
-    public Entity getEntity(Coordinate currentCoordinate) throws CellException,
-            OutOfWorldBoundsException, InvalidCoordinateException {
-        isOccupiedCellInWorld(currentCoordinate);
-        return locationEntityMap.get(currentCoordinate);
+    public Entity getEntity(Coordinate currentCoordinate) throws OutOfWorldBoundsException,
+            InvalidCoordinateException, FreeCell {
+        if (isOccupiedCellInWorld(currentCoordinate)) {
+            return locationEntityMap.get(currentCoordinate);
+        }
+        throw new FreeCell(currentCoordinate);
     }
 
-    public void removeEntity(Coordinate currentCoordinate) throws CellException,
+    public void removeEntity(Coordinate currentCoordinate) throws
             OutOfWorldBoundsException, InvalidCoordinateException {
         if (isOccupiedCellInWorld(currentCoordinate)) {
             locationEntityMap.remove(currentCoordinate);
@@ -94,7 +122,7 @@ public class WorldMap {
     }
 
     public void putFigure(Coordinate currentCoordinate, Entity entity) throws InvalidCoordinateException,
-            InvalidEntityException, OutOfWorldBoundsException, CellException {
+            InvalidEntityException, OutOfWorldBoundsException {
         checkEntity(entity);
         if (isFreeCellInWorld(currentCoordinate)) {
             locationEntityMap.put(currentCoordinate, entity);
@@ -102,19 +130,21 @@ public class WorldMap {
     }
 
     private boolean isOccupiedCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
-            OutOfWorldBoundsException, CellException {
+            OutOfWorldBoundsException {
         isValidCoordinate(coordinate);
         if (!locationEntityMap.containsKey(coordinate)) {
-            throw new CellException("Cell Free " + coordinate);
+            return false;
+//            throw new FreeCell( coordinate);
         }
         return true;
     }
 
     private boolean isFreeCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
-            OutOfWorldBoundsException, CellException {
+            OutOfWorldBoundsException {
         isValidCoordinate(coordinate);
         if (!isFreeCell(coordinate)) {
-            throw new CellException("Cell occupied " + coordinate);
+            return false;
+//            throw new OccupiedCell(coordinate);
         }
         return true;
     }
@@ -147,7 +177,7 @@ public class WorldMap {
                 .orElseThrow(() -> new InvalidEntityException("Empty Entity"));
     }
 
-    public int getAllCell(){
+    public int getAllCell() {
         return (getSizeHeight() + 1) * (getSizeLength() + 1);
     }
 

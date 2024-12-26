@@ -1,6 +1,6 @@
 package by.darafeyeu.algoritm;
 
-import by.darafeyeu.Exception.CellException;
+import by.darafeyeu.Exception.FreeCell;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
@@ -22,27 +22,24 @@ import java.util.Random;
 
 public class BreadthFirstSearch extends AlgoritmSearchPath {
     //todo сделать конструктор, наследовоние повтаряющиеся методы отправить в родителя.
-    private Class<? extends Entity> target;
 
     private List<CoordinateForAlgoritm> randomCoordinate;
     private CoordinateForAlgoritm targetCoordinate;
     private Map<CoordinateForAlgoritm, CoordinateForAlgoritm> beforeCells;
     private Queue<CoordinateForAlgoritm> queueCell;
     private CoordinateForAlgoritm currentCell;
-    private int speedAnimal;
 
     public BreadthFirstSearch(WorldMap worldMap) {
         super(worldMap);
-        // this.worldMap = worldMap;
         resetToDefault();
     }
 
     public List<Coordinate> getPath(Animal animal) {
         resetToDefault();
-        this.target = animal.getTargetFood();
-        this.speedAnimal = animal.getSpeedStep();
+        super.target = animal.getTargetFood();
+        super.speedAnimal = animal.getSpeedStep();
         try {
-            this.currentCell = new CoordinateForAlgoritm(getWorldMap().getCoordinateEntity(animal));
+            this.currentCell = new CoordinateForAlgoritm(super.worldMap.getCoordinateEntity(animal));
         } catch (InvalidCoordinateException e) {
             throw new RuntimeException(e);
         }
@@ -86,10 +83,10 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
 
     private boolean isTarget(CoordinateForAlgoritm coordinate) {
         try {
-            if (getWorldMap().getEntity(coordinate).getClass() == target) {
+            if (super.worldMap.getEntity(coordinate).getClass() == target) {
                 return true;
             }
-        } catch (CellException e) {
+        } catch (FreeCell e) {
             return false;
         } catch (OutOfWorldBoundsException e) {
             return false;
@@ -102,7 +99,7 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
     private void saveRandomCoordinate(CoordinateForAlgoritm currentCell) {
         int steepCurrentCell = currentCell.getStep();
 
-        if (steepCurrentCell <= speedAnimal) {
+        if (steepCurrentCell <= super.speedAnimal) {
             int steepRandomCoordinate = randomCoordinate.get(0).getStep();
 
             if (steepRandomCoordinate < steepCurrentCell) {
@@ -115,7 +112,6 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
 
     }
 
-    //может вернуть пустой лист
     public List<CoordinateForAlgoritm> cellNeighbours(CoordinateForAlgoritm currentCell) {
         List<CoordinateForAlgoritm> neighbours = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -130,8 +126,6 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         return neighbours;
     }
 
-    //возможны проблемы с пустым массивом попробывать добавить стартовую ячейку
-    //заменить нуль на проверку дефолтной координаты
     private List<Coordinate> pathToTarget() {
         if (isChengTargetCoordinate()) {
             return path(targetCoordinate);
@@ -171,5 +165,4 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         }
         return false;
     }
-
 }

@@ -1,6 +1,7 @@
 package by.darafeyeu.algoritm;
 
 import by.darafeyeu.Exception.CellException;
+import by.darafeyeu.Exception.FreeCell;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
@@ -16,36 +17,32 @@ import by.darafeyeu.world.WorldMap;
 import java.util.List;
 
 public abstract class AlgoritmSearchPath {
-    private final WorldMap worldMap;
+    protected final WorldMap worldMap;
+    protected Class<? extends Entity> target;
+    protected int speedAnimal;
 
-    public AlgoritmSearchPath(WorldMap worldMap){
+    protected AlgoritmSearchPath(WorldMap worldMap) {
         this.worldMap = worldMap;
     }
 
-   // protected abstract cellNeighbours(CoordinateForAlgoritm currentCell);
     public abstract List<Coordinate> getPath(Animal animal);
 
     protected boolean isCellEmptyOrTarget(Coordinate coordinate, Class<? extends Entity> target) {
-        Entity entityForCell = null;
+        Entity entityForCell;
         try {
             entityForCell = worldMap.getEntity(coordinate);
-        } catch (CellException e) {
+        } catch (FreeCell e) {
             return true;
         } catch (OutOfWorldBoundsException e) {
             return false;
         } catch (InvalidCoordinateException e) {
             return false;
         }
-        if (target == Rabbit.class) {
-            return !(entityForCell instanceof Grass || entityForCell instanceof Rock || entityForCell instanceof Tree
-                    || entityForCell instanceof Bear);
-        } else {
-            return !(entityForCell instanceof Animal || entityForCell instanceof Rock || entityForCell instanceof Tree);
+        if (target == entityForCell.getClass()) {
+            return true;
         }
+        return false;
     }
-    public abstract boolean isTargetCoordinate(Coordinate coordinate);
 
-    protected WorldMap getWorldMap() {
-        return worldMap;
-    }
+    public abstract boolean isTargetCoordinate(Coordinate coordinate);
 }

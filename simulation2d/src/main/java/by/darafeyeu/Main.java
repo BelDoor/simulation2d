@@ -1,9 +1,13 @@
 package by.darafeyeu;
 
+import by.darafeyeu.action.Action;
 import by.darafeyeu.action.ActionAnimal;
+import by.darafeyeu.action.MoveAnimalsAction;
 import by.darafeyeu.algoritm.BreadthFirstSearch;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
+import by.darafeyeu.nature.animals.Animal;
+import by.darafeyeu.nature.animals.Rabbit;
 import by.darafeyeu.nature.entity.Grass;
 import by.darafeyeu.world.WorldMap;
 import by.darafeyeu.world.WorldRender;
@@ -14,6 +18,10 @@ public class Main {
     public static void main(String[] agrs) {
         Coordinate coordinate = null;
         Entity entity = null;
+
+
+
+
 
 
       /*  Coordinate coordinateRabbit = new Coordinate(9, 2);
@@ -32,16 +40,26 @@ public class Main {
         BreadthFirstSearch bfs = new BreadthFirstSearch(worldMap);
         ActionAnimal actionAnimal = new ActionAnimal(worldMap);
 
+
+
         actionAnimal.planWorld(bfs);
+        Action move = new MoveAnimalsAction(worldMap);
         render.render(worldMap);
 
-        for (int i = 27; i > 0; i--) {
-            actionAnimal.miniSimulation();
+        for (int i = 0; i < 10; i++) {
+            move.action();
             render.render(worldMap);
-            if(i % 3 == 0){
-                actionAnimal.addEntityInWorld(new Grass());
-            }
         }
+
+
+
+//        for (int i = 27; i > 0; i--) {
+//            actionAnimal.miniSimulation();
+//            render.render(worldMap);
+//            if (i % 3 == 0) {
+//                actionAnimal.addEntityInWorld(new Grass());
+//            }
+//        }
 
 //        try {
 //            for (int i = 500; i > 0; i--) {

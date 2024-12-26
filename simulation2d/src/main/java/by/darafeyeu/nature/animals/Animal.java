@@ -10,23 +10,18 @@ import java.util.List;
 public abstract class Animal extends Entity {
     //добавить счетчик
     //привязать его к equals and hash
-    private int currentHP;
-    private int maxHP;
+    protected int currentHP;
+    protected int maxHP;
     private final int minHP = 0;
-    private int speedStep;
+    protected int speedStep;
 
-    private int defensePoint;
+    protected int defensePoint;
 
-    private int powerHit;
+    protected int powerHit;
     private boolean targetCell = false;
-    private AlgoritmSearchPath algoritmSearchPath;
-    private Class<? extends Entity> targetFood;
+    protected AlgoritmSearchPath algoritmSearchPath;
+    protected Class<? extends Entity> targetFood;
 
-    //вернем список на количество ходов+ (либо мап с ключем список ходов и значением boolean)-
-    //в классе акшен сделать метод движенеи котороый будет вызывать из анимал классы путь атака защита-
-    //можем узнать у бфс координата это это цель +
-    //если да придумать механику атаки -
-    //да. получаем существо из карты -
     //механика голада
     public List<Coordinate> pathSteps() {
         setTargetCell(false);
@@ -40,10 +35,10 @@ public abstract class Animal extends Entity {
 
         if (path.size() > stepForSpeedAnimal) {
             coordinates = path.subList(startIndexCoordinate, stepForSpeedAnimal);
+
         } else {
             isTargetCell(path.get(finishIndexStep));
             coordinates = path.subList(startIndexCoordinate, path.size());
-
         }
         return coordinates;
     }
@@ -61,7 +56,7 @@ public abstract class Animal extends Entity {
         }
     }
 
-    public int getAttackOnDefenseAponent() {
+    public int getAttackOnDefenseOpponent() {
         return CheckAction.d20();
     }
 
@@ -82,38 +77,6 @@ public abstract class Animal extends Entity {
         } else {
             currentHP = minHP;
         }
-    }
-
-    protected void setCurrentHP(int currentHp) {
-        this.currentHP = currentHp;
-    }
-
-    protected void setSpeedStep(int speedStep) {
-        this.speedStep = speedStep;
-    }
-
-    protected void setAlgoritmSearchPath(AlgoritmSearchPath algoritmSearchPath) {
-        this.algoritmSearchPath = algoritmSearchPath;
-    }
-
-    protected void setTargetFood(Class<? extends Entity> targetFood) {
-        this.targetFood = targetFood;
-    }
-
-    protected void setMaxHP(int maxHP) {
-        this.maxHP = maxHP;
-    }
-
-    protected void setDefensePoint(int defensePoint) {
-        this.defensePoint = defensePoint;
-    }
-
-    protected void setPowerHit(int powerHit) {
-        this.powerHit = powerHit;
-    }
-
-    public int getCurrentHP() {
-        return currentHP;
     }
 
     public int getSpeedStep() {

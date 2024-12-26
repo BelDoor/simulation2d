@@ -6,6 +6,8 @@ import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
+import java.util.Set;
+
 public class WorldRender {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -15,29 +17,31 @@ public class WorldRender {
     public static final String SPRITE_GRASS = "\uD83C\uDF3F";
     public static final String SPRITE_BEAR = "\uD83D\uDC3B";
     public static final String SPRITE_TREE = "\uD83C\uDF33";
+    public static final String SPRITE_TRACER = "\uD83C\uDFFF";
 
 
     //убрать могичиские числа
     //реализовать через StringBilder
     public void render(WorldMap world) {
         System.out.println("-----------------------");
+        Set<Coordinate> setTracers = world.getTracers();
         for (int length = world.getStartCoordinate(); length <= world.getSizeLength(); length++) {
             String line = "";
             for (int height = world.getStartCoordinate(); height <= world.getSizeHeight(); height++) {
-                Coordinate coordinates = new Coordinate(length, height);
-                if (world.isFreeCell(coordinates)) {
-                    line += getSpriteForEmptySquare(coordinates);
-                } else {
+                Coordinate coordinate = new Coordinate(length, height);
+                if (!world.isFreeCell(coordinate)) {
                     try {
-                        Entity entity = world.getEntity(coordinates);
-                        line += entity.getClass().getSimpleName();
+                        Entity entity = world.getEntity(coordinate);
+                        line += getEntitySprite(entity.getClass().getSimpleName());
                     } catch (InvalidCoordinateException e) {
-                        line += getSpriteForEmptySquare(coordinates);
+                        line += getSpriteForEmptySquare(coordinate);
                     } catch (OutOfWorldBoundsException e) {
-                        line += getSpriteForEmptySquare(coordinates);
-                    } catch (CellException e) {
-                        line += getSpriteForEmptySquare(coordinates);
+                        line += getSpriteForEmptySquare(coordinate);
                     }
+                } else if (setTracers.contains(coordinate)) {
+                    line += getSpriteForTracerSquare(coordinate);
+                } else {
+                    line += getSpriteForEmptySquare(coordinate);
                 }
             }
             line += ANSI_RESET;
@@ -64,6 +68,10 @@ public class WorldRender {
 
     private String getSpriteForEmptySquare(Coordinate coordinates) {
         return EMPTY_CELL;
+    }
+
+    private String getSpriteForTracerSquare(Coordinate coordinates) {
+        return SPRITE_TRACER;
     }
 
 
