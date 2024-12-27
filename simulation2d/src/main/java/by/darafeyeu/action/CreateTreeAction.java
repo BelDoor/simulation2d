@@ -3,6 +3,7 @@ package by.darafeyeu.action;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.InvalidEntityException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
+import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.entity.Rock;
 import by.darafeyeu.nature.entity.Tree;
 import by.darafeyeu.world.WorldMap;
@@ -16,17 +17,7 @@ public class CreateTreeAction extends CreateEntityAction {
     }
 
     @Override
-    public void action() {
-        for (int i = quantityEntity; i > 0; i--) {
-            try {
-                worldMap.putFigure(getEmptyCellInWorld(), new Tree());
-            } catch (InvalidCoordinateException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidEntityException e) {
-                throw new RuntimeException(e);
-            } catch (OutOfWorldBoundsException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    protected Entity getEntity() {
+        return new Tree();
     }
-}
+    }

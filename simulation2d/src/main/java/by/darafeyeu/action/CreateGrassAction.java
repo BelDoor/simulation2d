@@ -3,6 +3,9 @@ package by.darafeyeu.action;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.InvalidEntityException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
+import by.darafeyeu.algoritm.BreadthFirstSearch;
+import by.darafeyeu.nature.Entity;
+import by.darafeyeu.nature.animals.Rabbit;
 import by.darafeyeu.nature.entity.Grass;
 import by.darafeyeu.world.WorldMap;
 
@@ -15,18 +18,7 @@ public class CreateGrassAction extends CreateEntityAction{
     }
 
     @Override
-    public void action() {
-        for (int i = quantityEntity; i > 0 ; i--) {
-            try {
-                worldMap.putFigure(getEmptyCellInWorld(), new Grass());
-            } catch (InvalidCoordinateException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidEntityException e) {
-                throw new RuntimeException(e);
-            } catch (OutOfWorldBoundsException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    protected Entity getEntity() {
+        return new Grass();
     }
-
 }

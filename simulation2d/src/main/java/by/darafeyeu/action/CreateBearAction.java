@@ -5,11 +5,12 @@ import by.darafeyeu.Exception.InvalidEntityException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.algoritm.AlgoritmSearchPath;
 import by.darafeyeu.algoritm.BreadthFirstSearch;
+import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Bear;
 import by.darafeyeu.nature.animals.Rabbit;
 import by.darafeyeu.world.WorldMap;
 
-public class CreateBearAction extends CreateEntityAction{
+public class CreateBearAction extends CreateEntityAction {
     private static final int PARTS_OF_THE_WORLD = 50;
 
 
@@ -19,18 +20,7 @@ public class CreateBearAction extends CreateEntityAction{
     }
 
     @Override
-    public void action() {
-        AlgoritmSearchPath algoritm = new BreadthFirstSearch(worldMap);
-        for (int i = quantityEntity; i > 0; i--) {
-            try {
-                worldMap.putFigure(getEmptyCellInWorld(), new Bear(algoritm));
-            } catch (InvalidCoordinateException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidEntityException e) {
-                throw new RuntimeException(e);
-            } catch (OutOfWorldBoundsException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    protected Entity getEntity() {
+        return new Bear(new BreadthFirstSearch(worldMap));
     }
 }

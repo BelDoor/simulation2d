@@ -54,6 +54,7 @@ public class Main {
         startAction.add(new CreateRockAction(worldMap));
         startAction.add(new CreateTreeAction(worldMap));
         startAction.add(new CreateRabbitAction(worldMap));
+
         for (Action action : startAction) {
             action.action();
         }
