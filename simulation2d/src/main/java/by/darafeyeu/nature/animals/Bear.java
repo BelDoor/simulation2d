@@ -7,7 +7,7 @@ public class Bear extends Animal {
     private static final int START_HP = 8;
     private final int MAX_HP = 15;
     private final int DEFENSE_POINT = 4;
-    private static final int POWER_HIT = 4;
+    private static final int POWER_HIT = 7;
     private static final Class<Rabbit> TARGET_FOOD = Rabbit.class;
 
 

@@ -13,9 +13,10 @@ import java.util.List;
 
 
 public class MoveAnimalsAction extends Action {
+    private WorldMap worldMap;
 
     public MoveAnimalsAction(WorldMap worldMap) {
-        super.worldMap = worldMap;
+        this.worldMap = worldMap;
     }
 
     public void action() {

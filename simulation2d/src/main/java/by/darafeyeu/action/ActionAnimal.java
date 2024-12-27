@@ -26,9 +26,9 @@ public class ActionAnimal {
         int allCell = worldMap.getAllCell();
         addEntityInWorld(new Rabbit(algoritm));
         addEntityInWorld(new Rabbit(algoritm));
-        addEntityInWorld(new Grass());
-        addEntityInWorld(new Grass());
-        addEntityInWorld(new Grass());
+//        addEntityInWorld(new Grass());
+//        addEntityInWorld(new Grass());
+//        addEntityInWorld(new Grass());
         addEntityInWorld(new Bear(algoritm));
 /*        for (int i = allCell / 4; i > 0; i--) {
             addEntityInWorld(new Grass());

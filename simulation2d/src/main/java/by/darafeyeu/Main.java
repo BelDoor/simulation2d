@@ -2,6 +2,11 @@ package by.darafeyeu;
 
 import by.darafeyeu.action.Action;
 import by.darafeyeu.action.ActionAnimal;
+import by.darafeyeu.action.CreateBearAction;
+import by.darafeyeu.action.CreateGrassAction;
+import by.darafeyeu.action.CreateRabbitAction;
+import by.darafeyeu.action.CreateRockAction;
+import by.darafeyeu.action.CreateTreeAction;
 import by.darafeyeu.action.MoveAnimalsAction;
 import by.darafeyeu.algoritm.BreadthFirstSearch;
 import by.darafeyeu.coordinate.Coordinate;
@@ -11,6 +16,9 @@ import by.darafeyeu.nature.animals.Rabbit;
 import by.darafeyeu.nature.entity.Grass;
 import by.darafeyeu.world.WorldMap;
 import by.darafeyeu.world.WorldRender;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
@@ -35,19 +43,28 @@ public class Main {
 
         Coordinate coordinateBear = new Coordinate(4, 5);*/
 
-        WorldMap worldMap = new WorldMap(10, 10);
+        WorldMap worldMap = new WorldMap(15, 50);
         WorldRender render = new WorldRender();
         BreadthFirstSearch bfs = new BreadthFirstSearch(worldMap);
         ActionAnimal actionAnimal = new ActionAnimal(worldMap);
 
+        List<Action> startAction = new ArrayList<>();
+        startAction.add(new CreateBearAction(worldMap));
+        startAction.add(new CreateGrassAction(worldMap));
+        startAction.add(new CreateRockAction(worldMap));
+        startAction.add(new CreateTreeAction(worldMap));
+        startAction.add(new CreateRabbitAction(worldMap));
+        for (Action action : startAction) {
+            action.action();
+        }
 
 
-        actionAnimal.planWorld(bfs);
         Action move = new MoveAnimalsAction(worldMap);
         render.render(worldMap);
 
         for (int i = 0; i < 10; i++) {
             move.action();
+
             render.render(worldMap);
         }
 
