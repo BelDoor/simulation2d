@@ -1,19 +1,15 @@
 package by.darafeyeu;
 
 import by.darafeyeu.action.Action;
-import by.darafeyeu.action.ActionAnimal;
-import by.darafeyeu.action.CreateBearAction;
-import by.darafeyeu.action.CreateGrassAction;
-import by.darafeyeu.action.CreateRabbitAction;
-import by.darafeyeu.action.CreateRockAction;
-import by.darafeyeu.action.CreateTreeAction;
+import by.darafeyeu.action.create.entity.entitys.CreateBearsAction;
+import by.darafeyeu.action.create.entity.CreateGrasAction;
+import by.darafeyeu.action.create.entity.entitys.CreateGrassAction;
+import by.darafeyeu.action.create.entity.entitys.CreateRabbitsAction;
+import by.darafeyeu.action.create.entity.entitys.CreateRocksAction;
+import by.darafeyeu.action.create.entity.entitys.CreateTreesAction;
 import by.darafeyeu.action.MoveAnimalsAction;
-import by.darafeyeu.algoritm.BreadthFirstSearch;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
-import by.darafeyeu.nature.animals.Animal;
-import by.darafeyeu.nature.animals.Rabbit;
-import by.darafeyeu.nature.entity.Grass;
 import by.darafeyeu.world.WorldMap;
 import by.darafeyeu.world.WorldRender;
 
@@ -45,15 +41,13 @@ public class Main {
 
         WorldMap worldMap = new WorldMap(15, 50);
         WorldRender render = new WorldRender();
-        BreadthFirstSearch bfs = new BreadthFirstSearch(worldMap);
-        ActionAnimal actionAnimal = new ActionAnimal(worldMap);
 
         List<Action> startAction = new ArrayList<>();
-        startAction.add(new CreateBearAction(worldMap));
+        startAction.add(new CreateBearsAction(worldMap));
         startAction.add(new CreateGrassAction(worldMap));
-        startAction.add(new CreateRockAction(worldMap));
-        startAction.add(new CreateTreeAction(worldMap));
-        startAction.add(new CreateRabbitAction(worldMap));
+        startAction.add(new CreateRocksAction(worldMap));
+        startAction.add(new CreateTreesAction(worldMap));
+        startAction.add(new CreateRabbitsAction(worldMap));
 
         for (Action action : startAction) {
             action.action();
@@ -65,95 +59,7 @@ public class Main {
 
         for (int i = 0; i < 10; i++) {
             move.action();
-
             render.render(worldMap);
         }
-
-
-
-//        for (int i = 27; i > 0; i--) {
-//            actionAnimal.miniSimulation();
-//            render.render(worldMap);
-//            if (i % 3 == 0) {
-//                actionAnimal.addEntityInWorld(new Grass());
-//            }
-//        }
-
-//        try {
-//            for (int i = 500; i > 0; i--) {
-//                if (i % 2 == 0) {
-//                    worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Rock());
-//                } else {
-//                    worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Tree());
-//                }
-//            }
-//
-//            for (int i = 500; i > 0; i--) {
-//                worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Grass());
-//            }
-//
-//            for (int i = 200; i > 0; i--) {
-//                worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Rabbit(bfs));
-//            }
-//            worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Bear(bfs));
-//            worldMap.putFigure(worldMap.emptyRandomCoordinate(), new Bear(bfs));
-//
-//
-//          /*  worldMap.putFigure(coordinateRabbit, new Rabbit(bfs));
-//            worldMap.putFigure(coordinateRabbit2, new Rabbit(bfs));
-//            worldMap.putFigure(coordinateRabbit3, new Rabbit(bfs));
-//            worldMap.putFigure(coordinateBear, new Bear(bfs));
-//            worldMap.putFigure(coordinateGrass, new Grass());
-//            worldMap.putFigure(coordinateGrass1, new Grass());
-//            worldMap.putFigure(coordinateGrass2, new Grass());
-//            worldMap.putFigure(coordinateGrass3, new Grass());
-//            worldMap.putFigure(coordinateGrass4, new Grass());
-//
-//            for (int j = 0; j <= 9; j++) {
-//                for (int i = 0; i <= 9; i++) {
-//                    if ((j == 1 || j == 5 || j == 9) && ((i > 5 && i < 9))) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//                    if ((j == 3 || j == 7) && ((i > 6 && i <= 9))) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Tree());
-//                    }
-//                    if ((j != 0 && j != 3 && j != 7) && i == 5) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//                    if (i == 0 && (j == 4)) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//                    if (i == 1 && (j != 1) && (j != 7) && (j != 3) && (j != 5)) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//                    if (i == 2 && ((j == 2) || (j == 6))) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//                    if (i == 3 && (j != 7 && j != 1)) {
-//                        worldMap.putFigure(new Coordinate(i, j), new Rock());
-//                    }
-//
-//                }
-//            }*/
-//
-//
-//            render.render(worldMap);
-//
-//
-//            for (int i = 15; i >= 0; i--) {
-//                actionAnimal.miniSimulation();
-//                render.render(worldMap);
-//            }
-//        } catch (InvalidCoordinateException e) {
-//            System.err.println(e);
-//        } catch (OutOfWorldBoundsException e) {
-//            System.err.println(e);
-//        } catch (InvalidEntityException e) {
-//            System.err.println(e);
-//        } catch (CellException e) {
-//            throw new RuntimeException(e);
-//        }
-
-
     }
 }
