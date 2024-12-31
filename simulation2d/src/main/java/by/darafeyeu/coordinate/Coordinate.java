@@ -16,7 +16,7 @@ public class Coordinate {
         this.height = height;
     }
 
-    public Coordinate(Coordinate coordinate){
+    public Coordinate(Coordinate coordinate) {
         this.length = coordinate.length;
         this.height = coordinate.height;
     }
@@ -29,7 +29,7 @@ public class Coordinate {
         return height;
     }
 
-    public Coordinate addStep(Coordinate move){
+    public Coordinate addStep(Coordinate move) {
         return new Coordinate(this.length + move.length,
                 this.height + move.height);
     }

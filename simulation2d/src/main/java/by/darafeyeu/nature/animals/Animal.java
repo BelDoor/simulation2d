@@ -8,15 +8,17 @@ import by.darafeyeu.nature.Entity;
 import java.util.List;
 
 public abstract class Animal extends Entity {
-    //добавить счетчик
-    //привязать его к equals and hash
     protected int currentHP;
     protected int maxHP;
     private final int minHP = 0;
+    protected int energy;
+    protected int minusEnergy;
+    protected int maxEnergy;
+    private final int minEnergy = 0;
+
     protected int speedStep;
 
     protected int defensePoint;
-
     protected int powerHit;
     private boolean targetCell = false;
     protected AlgoritmSearchPath algoritmSearchPath;
@@ -61,7 +63,7 @@ public abstract class Animal extends Entity {
     }
 
     public boolean isDead() {
-        return currentHP == minHP;
+        return currentHP <= minHP;
     }
 
     public boolean checkMyDefense(int damageOnDefense) {
@@ -97,5 +99,22 @@ public abstract class Animal extends Entity {
 
     private void isTargetCell(Coordinate coordinate) {
         targetCell = algoritmSearchPath.isTargetCoordinate(coordinate);
+    }
+
+
+    public void minusEnergy() {
+        if ((energy - minusEnergy) > minEnergy) {
+            energy = energy - minusEnergy;
+            if(energy <= minEnergy) {
+                getDamage(1);
+            }
+        } else {
+            energy = minEnergy;
+            getDamage(1);
+        }
+    }
+
+    public void addEnergy(){
+        energy = maxEnergy;
     }
 }

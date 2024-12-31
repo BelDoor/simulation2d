@@ -1,10 +1,8 @@
 package by.darafeyeu.world;
 
-import by.darafeyeu.Exception.CellException;
 import by.darafeyeu.Exception.FreeCell;
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.InvalidEntityException;
-import by.darafeyeu.Exception.OccupiedCell;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.check_action.CheckAction;
 import by.darafeyeu.coordinate.Coordinate;
@@ -12,8 +10,6 @@ import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,11 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-//создавать чере сингелтон
 public class WorldMap {
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
     private static final int DEFAULT_LENGTH = 9;
     private static final int DEFAULT_HEIGHT = 9;
+    private static final int MAX_LENGTH = 99;
+    private static final int MAX_HEIGHT = 99;
     private static final int START_COORDINATE = 0;
 
     private Set<Coordinate> tracers = new HashSet<>();
@@ -42,14 +39,16 @@ public class WorldMap {
     public WorldMap(int length, int height) {
         length = length - 1;
         height = height - 1;
-        if ((length) < DEFAULT_LENGTH) {
+        if ((length) < DEFAULT_LENGTH || (height) < DEFAULT_HEIGHT) {
             this.sizeLength = DEFAULT_LENGTH;
-        }
-        if ((height) < DEFAULT_HEIGHT) {
             this.sizeHeight = DEFAULT_HEIGHT;
+        } else if ((length) > MAX_LENGTH || (height) > MAX_HEIGHT) {
+            this.sizeLength = MAX_LENGTH;
+            this.sizeHeight = MAX_HEIGHT;
+        } else {
+            this.sizeLength = length;
+            this.sizeHeight = height;
         }
-        this.sizeLength = length;
-        this.sizeHeight = height;
     }
 
     public void cleanTracers() {
@@ -94,13 +93,12 @@ public class WorldMap {
         return animals;
     }
 
-    //метод для поиска кординаты по сущности
     public Coordinate getCoordinateEntity(Entity entity) throws InvalidCoordinateException {
         Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
         for (Map.Entry<Coordinate, Entity> pair : entryLocationEntityMap) {
             if (entity == (pair.getValue())) {
-                return pair.getKey();
+                return new Coordinate(pair.getKey());
             }
         }
         throw new InvalidCoordinateException("Empty coordinate");

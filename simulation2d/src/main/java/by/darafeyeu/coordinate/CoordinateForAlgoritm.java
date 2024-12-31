@@ -10,11 +10,6 @@ public class CoordinateForAlgoritm extends Coordinate {
         this.step = DEFAULT_STEP;
     }
 
-    public CoordinateForAlgoritm(Integer length, Integer height) {
-        super(length, height);
-        this.step = COORDINATE_STEP;
-    }
-
     public CoordinateForAlgoritm(Coordinate coordinate) {
         super(coordinate);
         this.step = COORDINATE_STEP;
@@ -23,7 +18,6 @@ public class CoordinateForAlgoritm extends Coordinate {
     public void steepCount(int step) {
         this.step = step + 1;
     }
-
 
     public int getStep() {
         return step;

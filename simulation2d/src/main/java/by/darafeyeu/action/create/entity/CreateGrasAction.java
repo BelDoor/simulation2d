@@ -14,5 +14,4 @@ public class CreateGrasAction extends CreateEntityAction {
     protected Entity getEntity() {
         return new Grass();
     }
-
 }

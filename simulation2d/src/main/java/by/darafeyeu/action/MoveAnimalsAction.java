@@ -13,13 +13,18 @@ import java.util.List;
 
 
 public class MoveAnimalsAction extends Action {
+    List<Animal> animals;
     public MoveAnimalsAction(WorldMap worldMap) {
         super(worldMap);
     }
 
     public void action() {
         worldMap.cleanTracers();
-        for (Animal animal : worldMap.getAnimals()) {
+        animals = worldMap.getAnimals();
+
+        for (int i = 0; i < animals.size() ; i++) {
+            Animal animal = animals.get(i);
+            animal.minusEnergy();
             if (!animal.isDead()) {
                 List<Coordinate> pathSteps = animal.pathSteps();
                 worldMap.setTracers(pathSteps);
@@ -34,18 +39,12 @@ public class MoveAnimalsAction extends Action {
                     move(animal, pathSteps.get(indexLastButOneStep));
                     fight(animal, pathSteps.get(indexLastStep));
                 }
+            }else {
+                removeEntity(animal);
+                minusCountEntity(animal);
             }
         }
     }
-
-
-    //to do в общем методе итерация сделать
-    //вызов всех существ есть метод в карте
-    //вызвать координаты ходов
-    //посмотреть последний шаг к цели или нет
-    //нет идем на него
-    //да начинаем проверку на цель
-    //вызываем метод драка
 
 
     private void move(Animal animal, Coordinate finish) {
@@ -66,14 +65,16 @@ public class MoveAnimalsAction extends Action {
             fightRabbit(animal, targetEntity);
         } else {
             fightBear(animal, targetEntity);
-
         }
-
     }
 
     private void fightRabbit(Animal animal, Coordinate target) {
-        removeEntity(getEntityForCoordinate(target));
+        Entity targetEntity = getEntityForCoordinate(target);
+        removeEntity(targetEntity);
+        animals.remove(targetEntity);
+        minusCountEntity(targetEntity);
         animal.addCurrentHP();
+        animal.addEnergy();
         move(animal, target);
     }
 
@@ -85,13 +86,18 @@ public class MoveAnimalsAction extends Action {
                 rabbit.getDamage(bear.attackForApponent());
                 if (rabbit.isDead()) {
                     removeEntity(rabbit);
+                    animals.remove(rabbit);
+                    minusCountEntity(rabbit);
                     bear.addCurrentHP();
+                    bear.addEnergy();
                     move(bear, targetEntity);
                 }
             } else {
                 bear.getDamage(rabbit.attackForApponent());
                 if (bear.isDead()) {
                     removeEntity(bear);
+                    animals.remove(bear);
+                    minusCountEntity(bear);
                 }
             }
         }
@@ -99,10 +105,6 @@ public class MoveAnimalsAction extends Action {
 
     private boolean isEntityRabbit(Entity entity) {
         return entity instanceof Rabbit;
-    }
-
-    private void eat() {
-
     }
 
     public void removeEntity(Entity entity) {
@@ -123,6 +125,21 @@ public class MoveAnimalsAction extends Action {
             throw new RuntimeException(e);
         } catch (InvalidCoordinateException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void minusCountEntity(Entity entity) {
+        String nameEntity = entity.getClass().getSimpleName();
+        switch (nameEntity) {
+            case "Bear":
+                CountEntitys.minusCountBear();
+                break;
+            case "Rabbit":
+                CountEntitys.minusCountRabbit();
+                break;
+            case "Grass":
+                CountEntitys.minusCountGrass();
+                break;
         }
     }
 

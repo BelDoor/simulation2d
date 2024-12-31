@@ -19,7 +19,7 @@ public class CheckAction {
         return (random.nextInt(D_3) + EXCLUDE_ZERO);
     }
 
-    public static int randomParamCoordinate(int size){
+    public static int randomParamCoordinate(int size) {
         return (random.nextInt(size + 1));
     }
 

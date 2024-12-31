@@ -1,26 +1,15 @@
 package by.darafeyeu;
 
-import by.darafeyeu.action.Action;
-import by.darafeyeu.action.create.entity.entitys.CreateBearsAction;
-import by.darafeyeu.action.create.entity.CreateGrasAction;
-import by.darafeyeu.action.create.entity.entitys.CreateGrassAction;
-import by.darafeyeu.action.create.entity.entitys.CreateRabbitsAction;
-import by.darafeyeu.action.create.entity.entitys.CreateRocksAction;
-import by.darafeyeu.action.create.entity.entitys.CreateTreesAction;
-import by.darafeyeu.action.MoveAnimalsAction;
-import by.darafeyeu.coordinate.Coordinate;
-import by.darafeyeu.nature.Entity;
-import by.darafeyeu.world.WorldMap;
-import by.darafeyeu.world.WorldRender;
-
-import java.util.ArrayList;
-import java.util.List;
+import by.darafeyeu.simulation.Simulation;
 
 
 public class Main {
 
     public static void main(String[] agrs) {
-        Coordinate coordinate = null;
+        Menu menu = new Menu();
+        menu.menu();
+
+/*        Coordinate coordinate = null;
         Entity entity = null;
 
 
@@ -28,7 +17,7 @@ public class Main {
 
 
 
-      /*  Coordinate coordinateRabbit = new Coordinate(9, 2);
+      *//*  Coordinate coordinateRabbit = new Coordinate(9, 2);
         Coordinate coordinateRabbit2 = new Coordinate(9, 9);
         Coordinate coordinateRabbit3 = new Coordinate(7, 0);
         Coordinate coordinateGrass = new Coordinate(2, 3);
@@ -37,10 +26,10 @@ public class Main {
         Coordinate coordinateGrass3 = new Coordinate(5, 7);
         Coordinate coordinateGrass4 = new Coordinate(4, 4);
 
-        Coordinate coordinateBear = new Coordinate(4, 5);*/
+        Coordinate coordinateBear = new Coordinate(4, 5);*//*
 
-        WorldMap worldMap = new WorldMap(15, 50);
-        WorldRender render = new WorldRender();
+        WorldMap worldMap = new WorldMap(20, 50);
+        WorldRender render = new WorldRender(worldMap);
 
         List<Action> startAction = new ArrayList<>();
         startAction.add(new CreateBearsAction(worldMap));
@@ -55,11 +44,15 @@ public class Main {
 
 
         Action move = new MoveAnimalsAction(worldMap);
-        render.render(worldMap);
+        render.render();
+        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\n", CountEntity.getCountBear(),
+                CountEntity.getCountRabbit(), CountEntity.getCountGrass());
 
         for (int i = 0; i < 10; i++) {
             move.action();
-            render.render(worldMap);
-        }
+            render.render();
+            System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\n", CountEntity.getCountBear(),
+                     CountEntity.getCountRabbit(), CountEntity.getCountGrass());
+        }*/
     }
 }
