@@ -132,7 +132,6 @@ public class WorldMap {
         isValidCoordinate(coordinate);
         if (!locationEntityMap.containsKey(coordinate)) {
             return false;
-//            throw new FreeCell( coordinate);
         }
         return true;
     }
@@ -142,7 +141,6 @@ public class WorldMap {
         isValidCoordinate(coordinate);
         if (!isFreeCell(coordinate)) {
             return false;
-//            throw new OccupiedCell(coordinate);
         }
         return true;
     }

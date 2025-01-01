@@ -70,9 +70,7 @@ public class MoveAnimalsAction extends Action {
 
     private void fightRabbit(Animal animal, Coordinate target) {
         Entity targetEntity = getEntityForCoordinate(target);
-        removeEntity(targetEntity);
-        animals.remove(targetEntity);
-        minusCountEntity(targetEntity);
+        removeEntityAndDecrement(targetEntity);
         animal.addCurrentHP();
         animal.addEnergy();
         move(animal, target);
@@ -85,9 +83,7 @@ public class MoveAnimalsAction extends Action {
             if (rabbit.checkMyDefense(bear.getAttackOnDefenseOpponent())) {
                 rabbit.getDamage(bear.attackForApponent());
                 if (rabbit.isDead()) {
-                    removeEntity(rabbit);
-                    animals.remove(rabbit);
-                    minusCountEntity(rabbit);
+                    removeEntityAndDecrement(rabbit);
                     bear.addCurrentHP();
                     bear.addEnergy();
                     move(bear, targetEntity);
@@ -95,12 +91,16 @@ public class MoveAnimalsAction extends Action {
             } else {
                 bear.getDamage(rabbit.attackForApponent());
                 if (bear.isDead()) {
-                    removeEntity(bear);
-                    animals.remove(bear);
-                    minusCountEntity(bear);
+                    removeEntityAndDecrement(bear);
                 }
             }
         }
+    }
+
+    private void removeEntityAndDecrement(Entity entity){
+        removeEntity(entity);
+        animals.remove(entity);
+        minusCountEntity(entity);
     }
 
     private boolean isEntityRabbit(Entity entity) {

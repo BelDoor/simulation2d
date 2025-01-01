@@ -26,7 +26,7 @@ public class Simulation {
     private Action moveAction;
 
     private int countRound = 0;
-    
+
     public Simulation(int length, int height) {
         this.worldMap = new WorldMap(length, height);
         render = new WorldRender(worldMap);

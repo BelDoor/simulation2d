@@ -24,7 +24,6 @@ public abstract class Animal extends Entity {
     protected AlgoritmSearchPath algoritmSearchPath;
     protected Class<? extends Entity> targetFood;
 
-    //механика голада
     public List<Coordinate> pathSteps() {
         setTargetCell(false);
         List<Coordinate> path = algoritmSearchPath.getPath(this);

@@ -2,7 +2,6 @@ package by.darafeyeu.world;
 
 import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
-import by.darafeyeu.action.CountEntitys;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
@@ -25,8 +24,6 @@ public class WorldRender {
         this.worldMap = worldMap;
     }
 
-    //заменить String на  buffer line  и добавить его в поле.
-    //добавить метод с вводом количества существ
     public void render() {
         System.out.println("-----------------");
         Set<Coordinate> setTracers = worldMap.getTracers();
@@ -39,14 +36,14 @@ public class WorldRender {
                         Entity entity = worldMap.getEntity(coordinate);
                         this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
                     } catch (InvalidCoordinateException e) {
-                        this.line.append(getSpriteForEmptySquare(coordinate));
+                        this.line.append(getSpriteForEmptySquare());
                     } catch (OutOfWorldBoundsException e) {
-                        this.line.append(getSpriteForEmptySquare(coordinate));
+                        this.line.append(getSpriteForEmptySquare());
                     }
                 } else if (setTracers.contains(coordinate)) {
-                    this.line.append(getSpriteForTracerSquare(coordinate));
+                    this.line.append(getSpriteForTracerSquare());
                 } else {
-                    this.line.append(getSpriteForEmptySquare(coordinate));
+                    this.line.append(getSpriteForEmptySquare());
                 }
             }
             this.line.append(ANSI_RESET);
@@ -71,11 +68,11 @@ public class WorldRender {
         }
     }
 
-    private String getSpriteForEmptySquare(Coordinate coordinates) {
+    private String getSpriteForEmptySquare() {
         return EMPTY_CELL;
     }
 
-    private String getSpriteForTracerSquare(Coordinate coordinates) {
+    private String getSpriteForTracerSquare() {
         return SPRITE_TRACER;
     }
 
