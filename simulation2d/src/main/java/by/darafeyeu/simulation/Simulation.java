@@ -59,7 +59,6 @@ public class Simulation {
         System.out.printf("Round simulation -> %d\n", countRound);
     }
 
-
     private void createWorld() {
         for (Action action : createWorld) {
             action.action();
