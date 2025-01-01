@@ -71,8 +71,7 @@ public class MoveAnimalsAction extends Action {
     private void fightRabbit(Animal animal, Coordinate target) {
         Entity targetEntity = getEntityForCoordinate(target);
         removeEntityAndDecrement(targetEntity);
-        animal.addCurrentHP();
-        animal.addEnergy();
+        eat(animal);
         move(animal, target);
     }
 
@@ -84,8 +83,7 @@ public class MoveAnimalsAction extends Action {
                 rabbit.getDamage(bear.attackForApponent());
                 if (rabbit.isDead()) {
                     removeEntityAndDecrement(rabbit);
-                    bear.addCurrentHP();
-                    bear.addEnergy();
+                    eat(bear);
                     move(bear, targetEntity);
                 }
             } else {
@@ -103,11 +101,16 @@ public class MoveAnimalsAction extends Action {
         minusCountEntity(entity);
     }
 
+    private void eat(Animal animal){
+        animal.addCurrentHP();
+        animal.addEnergy();
+    }
+
     private boolean isEntityRabbit(Entity entity) {
         return entity instanceof Rabbit;
     }
 
-    public void removeEntity(Entity entity) {
+    private void removeEntity(Entity entity) {
         try {
             Coordinate currentCoordinate = worldMap.getCoordinateEntity(entity);
             worldMap.removeEntity(currentCoordinate);
