@@ -12,7 +12,6 @@ public class CreateRabbitAction extends CreateEntityAction {
     public CreateRabbitAction(WorldMap worldMap) {
         super(worldMap);
         algoritm = new BreadthFirstSearchForRabbit(worldMap);
-
     }
 
     @Override

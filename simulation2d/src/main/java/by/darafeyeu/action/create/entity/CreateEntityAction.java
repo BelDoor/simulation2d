@@ -4,7 +4,6 @@ import by.darafeyeu.Exception.InvalidCoordinateException;
 import by.darafeyeu.Exception.InvalidEntityException;
 import by.darafeyeu.Exception.OutOfWorldBoundsException;
 import by.darafeyeu.action.Action;
-import by.darafeyeu.action.CountEntitys;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
