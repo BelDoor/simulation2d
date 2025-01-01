@@ -19,40 +19,39 @@ public class WorldRender {
     public static final String SPRITE_BEAR = "\uD83D\uDC3B";
     public static final String SPRITE_TREE = "\uD83C\uDF33";
     public static final String SPRITE_TRACER = "\uD83C\uDFFF";
+    private StringBuilder line;
 
-    public WorldRender(WorldMap worldMap){
+    public WorldRender(WorldMap worldMap) {
         this.worldMap = worldMap;
     }
 
     //заменить String на  buffer line  и добавить его в поле.
     //добавить метод с вводом количества существ
     public void render() {
-        System.out.println("-----------------------");
+        System.out.println("-----------------");
         Set<Coordinate> setTracers = worldMap.getTracers();
         for (int length = worldMap.getStartCoordinate(); length <= worldMap.getSizeLength(); length++) {
-            String line = "";
+            this.line = new StringBuilder();
             for (int height = worldMap.getStartCoordinate(); height <= worldMap.getSizeHeight(); height++) {
                 Coordinate coordinate = new Coordinate(length, height);
                 if (!worldMap.isFreeCell(coordinate)) {
                     try {
                         Entity entity = worldMap.getEntity(coordinate);
-                        line += getEntitySprite(entity.getClass().getSimpleName());
+                        this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
                     } catch (InvalidCoordinateException e) {
-                        line += getSpriteForEmptySquare(coordinate);
+                        this.line.append(getSpriteForEmptySquare(coordinate));
                     } catch (OutOfWorldBoundsException e) {
-                        line += getSpriteForEmptySquare(coordinate);
+                        this.line.append(getSpriteForEmptySquare(coordinate));
                     }
                 } else if (setTracers.contains(coordinate)) {
-                    line += getSpriteForTracerSquare(coordinate);
+                    this.line.append(getSpriteForTracerSquare(coordinate));
                 } else {
-                    line += getSpriteForEmptySquare(coordinate);
+                    this.line.append(getSpriteForEmptySquare(coordinate));
                 }
             }
-            line += ANSI_RESET;
-            System.out.println(line);
+            this.line.append(ANSI_RESET);
+            System.out.println(this.line);
         }
-        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\n", CountEntitys.getCountBear(),
-                CountEntitys.getCountRabbit(), CountEntitys.getCountGrass());
     }
 
     private String getEntitySprite(String nameEntity) {

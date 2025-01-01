@@ -24,21 +24,9 @@ public class Simulation {
     private List<Action> createWorld = new ArrayList<>();
     private List<CreateEntityAction> addEntity = new ArrayList<>();
     private Action moveAction;
+
     private int countRound = 0;
-    private boolean isSimulationEnd = false;
-
-
-    public Simulation() {
-        this.worldMap = new WorldMap();
-        render = new WorldRender(worldMap);
-        Collections.addAll(createWorld, new CreateRocksAction(worldMap), new CreateTreesAction(worldMap),
-                new CreateGrassAction(worldMap), new CreateRabbitsAction(worldMap), new CreateBearsAction(worldMap));
-        Collections.addAll(addEntity, new CreateGrasAction(worldMap), new CreateBearAction(worldMap));
-        moveAction = new MoveAnimalsAction(worldMap);
-        createWorld();
-        render.render();
-    }
-
+    
     public Simulation(int length, int height) {
         this.worldMap = new WorldMap(length, height);
         render = new WorldRender(worldMap);
@@ -48,15 +36,13 @@ public class Simulation {
                 new CreateBearAction(worldMap));
         moveAction = new MoveAnimalsAction(worldMap);
         createWorld();
-        render.render();
     }
 
     public void simulation() {
         countRound++;
         moveAction.action();
-        render.render();
         addEntity();
-        System.out.printf("Round simulation -> %d\n", countRound);
+        render.render();
     }
 
     private void createWorld() {
@@ -71,5 +57,9 @@ public class Simulation {
                 action.addEntitys();
             }
         }
+    }
+
+    public int getCountRound() {
+        return countRound;
     }
 }

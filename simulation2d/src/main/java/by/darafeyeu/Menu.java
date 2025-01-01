@@ -1,5 +1,6 @@
 package by.darafeyeu;
 
+import by.darafeyeu.action.CountEntitys;
 import by.darafeyeu.simulation.Simulation;
 
 import java.util.Scanner;
@@ -10,7 +11,6 @@ public class Menu {
     private static final int ONE_ITERATION = 2;
     private static final int EXIT = 3;
     private static final int PAUSE_SIMULATION = 4;
-    private static final int DEFAULT_SIZE = 9;
 
     private static final String GET_ACTION = "Get action";
     private static final String START_ACTION = "1 - Start simulation";
@@ -20,15 +20,18 @@ public class Menu {
     private static final String ENTER_LENGTH_SIZE = "Enter length from 10 to 100";
     private static final String ENTER_HEIGHT_SIZE = "Enter height from 10 to 100";
     private static final String ENTER_INCORRECT = "You entered incorrect information";
-    private static final String ENTER_MENU = String.format("%s:\n%s.\n%s.\n%s.\n%s.\n", GET_ACTION, START_ACTION, MAKE_ONE_ACTION,
+    private static final String CONTINUATION_SIMULATION = "Continuation of the simulation";
+    private static final String ENTER_PAUSE = "Enter -> 4  for pause of the simulation";
+    private static final String ENTER_MENU = String.format("%s:\n%s.\n%s.\n%s.\n%s.", GET_ACTION, START_ACTION, MAKE_ONE_ACTION,
             EXIT_ACTION, PAUSE_ACTION);
+    private Simulation simulation;
 
 
     public void menu() {
 
         int length = enterNumber(ENTER_LENGTH_SIZE);
         int height = enterNumber(ENTER_HEIGHT_SIZE);
-        Simulation simulation = new Simulation(length, height);
+        simulation = new Simulation(length, height);
 
         while (true) {
             switch (enterNumber(ENTER_MENU)) {
@@ -36,14 +39,15 @@ public class Menu {
                     int userInput = START_SIMULATION;
                     while (true) {
                         simulation.simulation();
+                        outPutStatistics();
                         userInput = simulationControl(userInput);
                         if (userInput == PAUSE_SIMULATION)
                             break;
-                        enterMessage(PAUSE_ACTION);
                     }
                     break;
                 case ONE_ITERATION:
                     simulation.simulation();
+                    outPutStatistics();
                     break;
                 case EXIT:
                     scanner.close();
@@ -54,14 +58,14 @@ public class Menu {
     }
 
     private int simulationControl(int current) {
+        outPutMessage(ENTER_PAUSE);
         try {
             Thread.sleep(1000);
             if (System.in.available() > 0) {
-                if (scanner.nextInt() == PAUSE_SIMULATION) {
-                    enterMessage(START_ACTION);
+                if (enterNumber(PAUSE_ACTION) == PAUSE_SIMULATION) {
                     return PAUSE_SIMULATION;
-
                 }
+                outPutMessage(CONTINUATION_SIMULATION);
                 return START_SIMULATION;
             }
         } catch (Exception ex) {
@@ -70,15 +74,20 @@ public class Menu {
         return current;
     }
 
-    private void enterMessage(String message) {
-        System.out.printf("%s\n", message);
+    private void outPutMessage(String message) {
+        System.out.printf("%s\n->", message);
     }
 
-    private int enterNumber(String message){
-        enterMessage(message);
-        while (!scanner.hasNextInt()){
-            enterMessage(ENTER_INCORRECT);
-            enterMessage(message);
+    private void outPutStatistics() {
+        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\nRound simulation -> %d\n", CountEntitys.getCountBear(),
+                CountEntitys.getCountRabbit(), CountEntitys.getCountGrass(), simulation.getCountRound());
+    }
+
+    private int enterNumber(String message) {
+        outPutMessage(message);
+        while (!scanner.hasNextInt()) {
+            outPutMessage(ENTER_INCORRECT);
+            outPutMessage(message);
             scanner.next();
         }
         return scanner.nextInt();
