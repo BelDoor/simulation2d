@@ -33,8 +33,6 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         resetToDefault();
     }
 
-
-
     public List<Coordinate> getPath(Animal animal) {
         resetToDefault();
         super.target = animal.getTargetFood();
@@ -109,7 +107,6 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
                 randomCoordinate.add(currentCell);
             }
         }
-
     }
 
     private List<CoordinateForAlgoritm> cellNeighbours(CoordinateForAlgoritm currentCell) {

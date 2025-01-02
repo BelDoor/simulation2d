@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class WorldMap {
+public final class WorldMap {
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
     private static final int DEFAULT_LENGTH = 9;
     private static final int DEFAULT_HEIGHT = 9;

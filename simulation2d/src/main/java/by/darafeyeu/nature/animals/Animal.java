@@ -36,7 +36,6 @@ public abstract class Animal extends Entity {
 
         if (path.size() > stepForSpeedAnimal) {
             coordinates = path.subList(startIndexCoordinate, stepForSpeedAnimal);
-
         } else {
             isTargetCell(path.get(finishIndexStep));
             coordinates = path.subList(startIndexCoordinate, path.size());
@@ -48,7 +47,7 @@ public abstract class Animal extends Entity {
         return powerHit;
     }
 
-    public void addCurrentHP() {
+    public void addHP() {
         int plusHP = CheckAction.d3();
         if ((currentHP + plusHP) <= maxHP) {
             currentHP = currentHP + plusHP;
@@ -57,7 +56,7 @@ public abstract class Animal extends Entity {
         }
     }
 
-    public int getAttackOnDefenseOpponent() {
+    public int attackOnDefenseOpponent() {
         return CheckAction.d20();
     }
 
@@ -88,11 +87,11 @@ public abstract class Animal extends Entity {
         return targetFood;
     }
 
-    public boolean getTargetCell() {
+    public boolean hasSearchTargetBeenFound() {
         return targetCell;
     }
 
-    public void setTargetCell(boolean b) {
+    private void setTargetCell(boolean b) {
         targetCell = b;
     }
 
@@ -101,7 +100,7 @@ public abstract class Animal extends Entity {
     }
 
 
-    public void minusEnergy() {
+    public void drainEnergyFromAnimal() {
         if ((energy - minusEnergy) > minEnergy) {
             energy = energy - minusEnergy;
             if(energy <= minEnergy) {
@@ -113,7 +112,7 @@ public abstract class Animal extends Entity {
         }
     }
 
-    public void addEnergy(){
+    public void addEnergyToAnimal(){
         energy = maxEnergy;
     }
 }

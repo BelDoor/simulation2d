@@ -24,7 +24,7 @@ public class MoveAnimalsAction extends Action {
 
         for (int i = 0; i < animals.size() ; i++) {
             Animal animal = animals.get(i);
-            animal.minusEnergy();
+            animal.drainEnergyFromAnimal();
             if (!animal.isDead()) {
                 List<Coordinate> pathSteps = animal.pathSteps();
                 worldMap.setTracers(pathSteps);
@@ -33,7 +33,7 @@ public class MoveAnimalsAction extends Action {
                 if (indexLastStep > 1) {
                     indexLastButOneStep = indexLastStep - 1;
                 }
-                if (!animal.getTargetCell()) {
+                if (!animal.hasSearchTargetBeenFound()) {
                     move(animal, pathSteps.get(indexLastStep));
                 } else {
                     move(animal, pathSteps.get(indexLastButOneStep));
@@ -79,7 +79,7 @@ public class MoveAnimalsAction extends Action {
     private void fightBear(Animal bear, Coordinate targetEntity) {
         if (isEntityRabbit(getEntityForCoordinate(targetEntity))) {
             Rabbit rabbit = (Rabbit) getEntityForCoordinate(targetEntity);
-            if (rabbit.checkMyDefense(bear.getAttackOnDefenseOpponent())) {
+            if (rabbit.checkMyDefense(bear.attackOnDefenseOpponent())) {
                 rabbit.getDamage(bear.attackForApponent());
                 if (rabbit.isDead()) {
                     removeEntityAndDecrement(rabbit);
@@ -102,8 +102,8 @@ public class MoveAnimalsAction extends Action {
     }
 
     private void eat(Animal animal){
-        animal.addCurrentHP();
-        animal.addEnergy();
+        animal.addHP();
+        animal.addEnergyToAnimal();
     }
 
     private boolean isEntityRabbit(Entity entity) {
