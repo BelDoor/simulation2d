@@ -1,4 +1,4 @@
-package by.darafeyeu.Exception;
+package by.darafeyeu.exception;
 
 import java.util.function.Supplier;
 

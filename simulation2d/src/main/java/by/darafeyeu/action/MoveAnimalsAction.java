@@ -1,8 +1,8 @@
 package by.darafeyeu.action;
 
-import by.darafeyeu.Exception.InvalidCoordinateException;
-import by.darafeyeu.Exception.InvalidEntityException;
-import by.darafeyeu.Exception.OutOfWorldBoundsException;
+import by.darafeyeu.exception.InvalidCoordinateException;
+import by.darafeyeu.exception.InvalidEntityException;
+import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;

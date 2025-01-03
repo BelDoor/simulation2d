@@ -1,7 +1,7 @@
 package by.darafeyeu.world;
 
-import by.darafeyeu.Exception.InvalidCoordinateException;
-import by.darafeyeu.Exception.OutOfWorldBoundsException;
+import by.darafeyeu.exception.InvalidCoordinateException;
+import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 

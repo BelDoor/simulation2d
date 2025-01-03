@@ -1,8 +1,8 @@
 package by.darafeyeu.algoritm;
 
-import by.darafeyeu.Exception.FreeCell;
-import by.darafeyeu.Exception.InvalidCoordinateException;
-import by.darafeyeu.Exception.OutOfWorldBoundsException;
+import by.darafeyeu.exception.FreeCell;
+import by.darafeyeu.exception.InvalidCoordinateException;
+import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.coordinate.CoordinateForAlgoritm;
 import by.darafeyeu.coordinate.CreatureMove;
