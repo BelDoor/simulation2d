@@ -1,4 +1,4 @@
-package by.darafeyeu;
+package by.darafeyeu.menu;
 
 import by.darafeyeu.action.CountEntitys;
 import by.darafeyeu.simulation.Simulation;
@@ -25,7 +25,6 @@ public class Menu {
     private static final String ENTER_MENU = String.format("%s:\n%s.\n%s.\n%s.\n%s.", GET_ACTION, START_ACTION, MAKE_ONE_ACTION,
             EXIT_ACTION, PAUSE_ACTION);
     private Simulation simulation;
-
 
     public void menu() {
 
