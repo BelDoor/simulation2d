@@ -36,6 +36,7 @@ public class Simulation {
                 new CreateBearAction(worldMap));
         moveAction = new MoveAnimalsAction(worldMap);
         createWorld();
+        render.render();
     }
 
     public void simulation() {
