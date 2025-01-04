@@ -89,6 +89,4 @@ public class WorldRender {
     private String getSpriteForTracerSquare() {
         return SPRITE_TRACER;
     }
-
-
 }

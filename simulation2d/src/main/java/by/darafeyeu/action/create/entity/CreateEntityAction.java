@@ -16,7 +16,7 @@ public abstract class CreateEntityAction extends Action {
 
     public CreateEntityAction(WorldMap worldMap) {
         super(worldMap);
-        this.allCellInWorld = worldMap.getAllCell();
+        this.allCellInWorld = worldMap.getCountAllCell();
         partsWorld = allCellInWorld;
     }
 

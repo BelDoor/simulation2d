@@ -27,8 +27,8 @@ public final class WorldMap {
 
     private Set<Coordinate> tracers = new HashSet<>();
 
-    private int sizeLength;
-    private int sizeHeight;
+    private final int sizeLength;
+    private final int sizeHeight;
 
 
     public WorldMap() {
@@ -157,10 +157,10 @@ public final class WorldMap {
     }
 
     private boolean isCoordinateInMap(Coordinate coordinate) {
-        int heigt = coordinate.getHeight();
-        int lenght = coordinate.getLength();
-        return ((heigt >= START_COORDINATE && heigt <= this.sizeHeight) &&
-                (lenght >= START_COORDINATE && lenght <= this.sizeLength));
+        int height = coordinate.getHeight();
+        int length = coordinate.getLength();
+        return ((height >= START_COORDINATE && height <= this.sizeHeight) &&
+                (length >= START_COORDINATE && length <= this.sizeLength));
     }
 
     private Coordinate checkCoordinate(Coordinate currentCoordinate) throws InvalidCoordinateException {
@@ -173,7 +173,7 @@ public final class WorldMap {
                 .orElseThrow(() -> new InvalidEntityException("Empty Entity"));
     }
 
-    public int getAllCell() {
+    public int getCountAllCell() {
         return (getSizeHeight() + 1) * (getSizeLength() + 1);
     }
 
