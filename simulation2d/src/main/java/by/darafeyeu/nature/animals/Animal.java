@@ -1,7 +1,7 @@
 package by.darafeyeu.nature.animals;
 
 import by.darafeyeu.algoritm.AlgoritmSearchPath;
-import by.darafeyeu.check_action.CheckAction;
+import by.darafeyeu.random_number.RandomNumber;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
@@ -43,12 +43,12 @@ public abstract class Animal extends Entity {
         return coordinates;
     }
 
-    public int attackForApponent() {
+    public int attackForOpponent() {
         return powerHit;
     }
 
     public void addHP() {
-        int plusHP = CheckAction.d3();
+        int plusHP = RandomNumber.d3();
         if ((currentHP + plusHP) <= maxHP) {
             currentHP = currentHP + plusHP;
         } else {
@@ -57,7 +57,7 @@ public abstract class Animal extends Entity {
     }
 
     public int attackOnDefenseOpponent() {
-        return CheckAction.d20();
+        return RandomNumber.d20();
     }
 
     public boolean isDead() {

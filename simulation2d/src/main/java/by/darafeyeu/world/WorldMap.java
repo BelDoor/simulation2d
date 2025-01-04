@@ -4,7 +4,7 @@ import by.darafeyeu.exception.FreeCell;
 import by.darafeyeu.exception.InvalidCoordinateException;
 import by.darafeyeu.exception.InvalidEntityException;
 import by.darafeyeu.exception.OutOfWorldBoundsException;
-import by.darafeyeu.check_action.CheckAction;
+import by.darafeyeu.random_number.RandomNumber;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;
@@ -73,8 +73,8 @@ public final class WorldMap {
 
     public Coordinate emptyRandomCoordinate() {
         while (true) {
-            int length = CheckAction.randomParamCoordinate(getSizeLength());
-            int height = CheckAction.randomParamCoordinate(getSizeHeight());
+            int length = RandomNumber.randomParamCoordinate(getSizeLength());
+            int height = RandomNumber.randomParamCoordinate(getSizeHeight());
             Coordinate randomCoordinate = new Coordinate(length, height);
             if (!locationEntityMap.containsKey(randomCoordinate)) {
                 return randomCoordinate;

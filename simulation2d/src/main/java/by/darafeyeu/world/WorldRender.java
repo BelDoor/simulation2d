@@ -60,6 +60,8 @@ public class WorldRender {
         }
     }
 
+
+
     private boolean isTracerCell(Coordinate coordinate){
         Set<Coordinate> setTracers = worldMap.getTracers();
         return setTracers.contains(coordinate);

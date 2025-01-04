@@ -78,8 +78,9 @@ public class Menu {
     }
 
     private void outPutStatistics() {
-        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\nRound simulation -> %d\n", CountEntitys.getCountBear(),
-                CountEntitys.getCountRabbit(), CountEntitys.getCountGrass(), simulation.getCountRound());
+        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\nRound simulation -> %d\n",
+                CountEntitys.getCountBear(), CountEntitys.getCountRabbit(),
+                CountEntitys.getCountGrass(), simulation.getCountRound());
     }
 
     private int enterNumber(String message) {

@@ -1,9 +1,9 @@
-package by.darafeyeu.check_action;
+package by.darafeyeu.random_number;
 
 import java.time.Instant;
 import java.util.Random;
 
-public class CheckAction {
+public class RandomNumber {
     public static final int D_20 = 21;
     public static final int D_3 = 3;
 

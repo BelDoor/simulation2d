@@ -79,14 +79,14 @@ public class MoveAnimalsAction extends Action {
         if (isEntityRabbit(getEntityForCoordinate(targetEntity))) {
             Rabbit rabbit = (Rabbit) getEntityForCoordinate(targetEntity);
             if (rabbit.checkMyDefense(bear.attackOnDefenseOpponent())) {
-                rabbit.getDamage(bear.attackForApponent());
+                rabbit.getDamage(bear.attackForOpponent());
                 if (rabbit.isDead()) {
                     removeEntityAndDecrement(rabbit);
                     eat(bear);
                     move(bear, targetEntity);
                 }
             } else {
-                bear.getDamage(rabbit.attackForApponent());
+                bear.getDamage(rabbit.attackForOpponent());
                 if (bear.isDead()) {
                     removeEntityAndDecrement(bear);
                 }
