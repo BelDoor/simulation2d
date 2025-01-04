@@ -19,7 +19,6 @@ public class MoveAnimalsAction extends Action {
     }
 
     public void action() {
-        worldMap.cleanTracers();
         animals = worldMap.getAnimals();
 
         for (int i = 0; i < animals.size() ; i++) {

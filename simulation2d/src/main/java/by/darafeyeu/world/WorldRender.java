@@ -18,6 +18,7 @@ public class WorldRender {
     public static final String SPRITE_BEAR = "\uD83D\uDC3B";
     public static final String SPRITE_TREE = "\uD83C\uDF33";
     public static final String SPRITE_TRACER = "\uD83C\uDFFF";
+    public static final String SPRITE_DELETED = "-----------------";
     private StringBuilder line;
 
     public WorldRender(WorldMap worldMap) {
@@ -25,30 +26,43 @@ public class WorldRender {
     }
 
     public void render() {
-        System.out.println("-----------------");
-        Set<Coordinate> setTracers = worldMap.getTracers();
+        System.out.println(SPRITE_DELETED);
+
         for (int length = worldMap.getStartCoordinate(); length <= worldMap.getSizeLength(); length++) {
             this.line = new StringBuilder();
             for (int height = worldMap.getStartCoordinate(); height <= worldMap.getSizeHeight(); height++) {
-                Coordinate coordinate = new Coordinate(length, height);
-                if (!worldMap.isFreeCell(coordinate)) {
-                    try {
-                        Entity entity = worldMap.getEntity(coordinate);
-                        this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
-                    } catch (InvalidCoordinateException e) {
-                        this.line.append(getSpriteForEmptySquare());
-                    } catch (OutOfWorldBoundsException e) {
-                        this.line.append(getSpriteForEmptySquare());
-                    }
-                } else if (setTracers.contains(coordinate)) {
-                    this.line.append(getSpriteForTracerSquare());
-                } else {
-                    this.line.append(getSpriteForEmptySquare());
-                }
+                paintCoordinate(new Coordinate(length, height));
             }
             this.line.append(ANSI_RESET);
             System.out.println(this.line);
         }
+        worldMap.cleanTracers();
+    }
+
+    private void paintCoordinate(Coordinate coordinate) {
+        if (!worldMap.isFreeCell(coordinate)) {
+           paintEntity(coordinate);
+        } else if (isTracerCell(coordinate)) {
+            this.line.append(getSpriteForTracerSquare());
+        } else {
+            this.line.append(getSpriteForEmptySquare());
+        }
+    }
+
+    private void paintEntity(Coordinate coordinate){
+        try {
+            Entity entity = worldMap.getEntity(coordinate);
+            this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
+        } catch (InvalidCoordinateException e) {
+            this.line.append(getSpriteForEmptySquare());
+        } catch (OutOfWorldBoundsException e) {
+            this.line.append(getSpriteForEmptySquare());
+        }
+    }
+
+    private boolean isTracerCell(Coordinate coordinate){
+        Set<Coordinate> setTracers = worldMap.getTracers();
+        return setTracers.contains(coordinate);
     }
 
     private String getEntitySprite(String nameEntity) {

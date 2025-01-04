@@ -51,7 +51,7 @@ public final class WorldMap {
         }
     }
 
-    public void cleanTracers() {
+    protected void cleanTracers() {
         tracers.clear();
     }
 
