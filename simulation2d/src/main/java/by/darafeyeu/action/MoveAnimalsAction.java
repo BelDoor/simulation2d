@@ -97,6 +97,7 @@ public class MoveAnimalsAction extends Action {
     private void removeEntityAndDecrement(Entity entity){
         removeEntity(entity);
         animals.remove(entity);
+        entity.minusCount();
         minusCountEntity(entity);
     }
 

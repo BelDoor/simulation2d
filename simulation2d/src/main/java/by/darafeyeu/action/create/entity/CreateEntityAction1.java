@@ -31,7 +31,7 @@ public class CreateEntityAction1 extends Action {
     @Override
     public void action() {
 
-        for (int i = 0; i < quantityEntity; i++) {
+        for (int i = 0; i < 5/* quantityEntity*/; i++) {
             try {
                 worldMap.putFigure(worldMap.emptyRandomCoordinate(), entity);
             } catch (InvalidCoordinateException e) {
@@ -45,7 +45,7 @@ public class CreateEntityAction1 extends Action {
     }
 
     private void quantityEntity(){
-        //todo с помощью сущности  находим в классе счетчик нужное значение для старта 
+        //todo с помощью сущности  находим в классе счетчик нужное значение для старта
     }
 
     public static void main(String[] args) {
