@@ -1,6 +1,5 @@
 package by.darafeyeu.menu;
 
-import by.darafeyeu.action.CountEntitys;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.simulation.Simulation;
 
@@ -79,9 +78,6 @@ public class Menu {
     }
 
     private void outPutStatistics() {
-        System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\nRound simulation -> %d\n",
-                CountEntitys.getCountBear(), CountEntitys.getCountRabbit(),
-                CountEntitys.getCountGrass(), simulation.getCountRound());
         System.out.printf("Count bear - %d \nCount rabbit - %d\nCount grass - %d\nRound simulation -> %d\n",
                 Entity.getEntityCount("Bear"), Entity.getEntityCount("Rabbit"),
                 Entity.getEntityCount("Grass"), simulation.getCountRound());

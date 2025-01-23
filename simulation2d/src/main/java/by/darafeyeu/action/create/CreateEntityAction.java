@@ -1,4 +1,4 @@
-package by.darafeyeu.action.create.entity;
+package by.darafeyeu.action.create;
 
 import by.darafeyeu.action.Action;
 import by.darafeyeu.exception.InvalidCoordinateException;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CreateEntityAction1 extends Action {
+public class CreateEntityAction extends Action {
 
     private static final int TREE_OF_THE_WORLD = 11;
     private static final int ROCK_OF_THE_WORLD = 10;
@@ -31,7 +31,7 @@ public class CreateEntityAction1 extends Action {
     private boolean checkCreatedEntityInWorld = false;
 
 
-    public CreateEntityAction1(WorldMap worldMap, Supplier<? extends Entity> entitySupplier) {
+    public CreateEntityAction(WorldMap worldMap, Supplier<? extends Entity> entitySupplier) {
         super(worldMap);
         this.entitySupplier = entitySupplier;
 

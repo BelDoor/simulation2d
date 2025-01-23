@@ -1,6 +1,5 @@
 package by.darafeyeu.action;
 
-import by.darafeyeu.action.create.entity.CurrentEntityCount;
 import by.darafeyeu.world.WorldMap;
 
 public abstract class Action {

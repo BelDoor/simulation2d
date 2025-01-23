@@ -1,5 +1,6 @@
-package by.darafeyeu.action;
+package by.darafeyeu.action.move;
 
+import by.darafeyeu.action.Action;
 import by.darafeyeu.exception.InvalidCoordinateException;
 import by.darafeyeu.exception.InvalidEntityException;
 import by.darafeyeu.exception.OutOfWorldBoundsException;
@@ -41,8 +42,6 @@ public class MoveAnimalsAction extends Action {
             }else {
                 removeEntity(animal);
                 animal.minusCount();
-                //todo убрать старй счетчик
-                minusCountEntity(animal);
             }
         }
     }
@@ -96,12 +95,10 @@ public class MoveAnimalsAction extends Action {
         }
     }
 
-    //todo убрать старый счетчик.
     private void removeEntityAndDecrement(Entity entity){
         removeEntity(entity);
         animals.remove(entity);
         entity.minusCount();
-        minusCountEntity(entity);
     }
 
     private void eat(Animal animal){
@@ -131,21 +128,6 @@ public class MoveAnimalsAction extends Action {
             throw new RuntimeException(e);
         } catch (InvalidCoordinateException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private void minusCountEntity(Entity entity) {
-        String nameEntity = entity.getClass().getSimpleName();
-        switch (nameEntity) {
-            case "Bear":
-                CountEntitys.minusCountBear();
-                break;
-            case "Rabbit":
-                CountEntitys.minusCountRabbit();
-                break;
-            case "Grass":
-                CountEntitys.minusCountGrass();
-                break;
         }
     }
 
