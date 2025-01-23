@@ -28,6 +28,12 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
     private CoordinateForAlgoritm currentCell;
     protected int optionOfStep;
 
+    public BreadthFirstSearch(WorldMap worldMap, int countOfDirection) {
+        super(worldMap);
+        resetToDefault();
+        optionOfStep = countOfDirection;
+    }
+
     public BreadthFirstSearch(WorldMap worldMap) {
         super(worldMap);
         resetToDefault();

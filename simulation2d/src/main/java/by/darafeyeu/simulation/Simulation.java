@@ -13,6 +13,8 @@ import by.darafeyeu.action.create.entitys.CreateRabbitsAction;
 import by.darafeyeu.action.create.entitys.CreateRocksAction;
 import by.darafeyeu.action.create.entitys.CreateTreesAction;
 import by.darafeyeu.algoritm.BreadthFirstSearch;
+import by.darafeyeu.algoritm.BreadthFirstSearchForBear;
+import by.darafeyeu.algoritm.BreadthFirstSearchForRabbit;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Bear;
 import by.darafeyeu.nature.animals.Rabbit;
@@ -31,8 +33,8 @@ public class Simulation {
     private WorldRender render;
     private List<Action> createWorld = new ArrayList<>();
     private List<CreateEntityAction> addEntity = new ArrayList<>();
-    private List<Entity> entityClasses = new ArrayList<>();
-    private List<Action> createEntityAction = new ArrayList<>();
+
+    private List<CreateEntityAction1> createEntityAction = new ArrayList<>();
     private Action moveAction;
 
     private int countRound = 0;
@@ -40,18 +42,18 @@ public class Simulation {
     public Simulation(int length, int height) {
         this.worldMap = new WorldMap(length, height);
         render = new WorldRender(worldMap);
-        Collections.addAll(createWorld, new CreateRocksAction(worldMap), new CreateTreesAction(worldMap),
+       /* Collections.addAll(createWorld, new CreateRocksAction(worldMap), new CreateTreesAction(worldMap),
                 new CreateGrassAction(worldMap), new CreateRabbitsAction(worldMap), new CreateBearsAction(worldMap));
         Collections.addAll(addEntity, new CreateGrasAction(worldMap), new CreateRabbitAction(worldMap),
-                new CreateBearAction(worldMap));
+                new CreateBearAction(worldMap));*/
         moveAction = new MoveAnimalsAction(worldMap);
 
         Collections.addAll(createEntityAction,
                 new CreateEntityAction1(worldMap, Tree::new),
                 new CreateEntityAction1(worldMap, Grass::new),
                 new CreateEntityAction1(worldMap, Rock::new),
-                new CreateEntityAction1(worldMap, () -> new Rabbit(new BreadthFirstSearch(worldMap))),
-                new CreateEntityAction1(worldMap, () -> new Bear(new BreadthFirstSearch(worldMap)))
+                new CreateEntityAction1(worldMap, () -> new Rabbit(new BreadthFirstSearch(worldMap,4))),
+                new CreateEntityAction1(worldMap, () -> new Bear(new BreadthFirstSearch(worldMap,8)))
         );
 
         createWorld();
@@ -66,19 +68,29 @@ public class Simulation {
     }
 
     private void createWorld() {
-        for (Action action : createWorld) {
-            action.action();
-        }
+//        for (Action action : createWorld) {
+//            action.action();
+//        }
         //todo
-//        for (Action action : createEntityAction) {
-//                action.action();
+        for (CreateEntityAction1 createEntityAction : createEntityAction) {
+//            int iteration = createEntityAction.quantityEntity();
+//            for (int i = 0; i < iteration; i++) {
+                createEntityAction.action();
+            }
+
 //        }
     }
 
     private void addEntity() {
         if (countRound % 5 == 0) {
-            for (CreateEntityAction action : addEntity) {
-                action.addEntitys();
+//            for (CreateEntityAction action : addEntity) {
+//                action.addEntitys();
+//            }
+            for (CreateEntityAction1 createEntityAction : createEntityAction) {
+//                int iteration = createEntityAction.quantityEntity();
+//                for (int i = 0; i < iteration; i++) {
+                    createEntityAction.action();
+//                }
             }
         }
     }

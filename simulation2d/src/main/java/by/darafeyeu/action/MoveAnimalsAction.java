@@ -40,6 +40,8 @@ public class MoveAnimalsAction extends Action {
                 }
             }else {
                 removeEntity(animal);
+                animal.minusCount();
+                //todo убрать старй счетчик
                 minusCountEntity(animal);
             }
         }
@@ -94,6 +96,7 @@ public class MoveAnimalsAction extends Action {
         }
     }
 
+    //todo убрать старый счетчик.
     private void removeEntityAndDecrement(Entity entity){
         removeEntity(entity);
         animals.remove(entity);

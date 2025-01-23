@@ -1,37 +1,61 @@
 package by.darafeyeu.action.create.entity;
 
 import by.darafeyeu.action.Action;
-import by.darafeyeu.algoritm.BreadthFirstSearch;
 import by.darafeyeu.exception.InvalidCoordinateException;
 import by.darafeyeu.exception.InvalidEntityException;
 import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.nature.Entity;
-import by.darafeyeu.nature.animals.Bear;
-import by.darafeyeu.nature.animals.Rabbit;
-import by.darafeyeu.nature.entity.Grass;
-import by.darafeyeu.nature.entity.Rock;
-import by.darafeyeu.nature.entity.Tree;
 import by.darafeyeu.world.WorldMap;
-import by.darafeyeu.world.WorldRender;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class CreateEntityAction1 extends Action {
-    private Entity entity ;
-    private int quantityEntity = 1;
 
-    public CreateEntityAction1(WorldMap worldMap, Supplier<? extends Entity> t) {
+    private static final int TREE_OF_THE_WORLD = 11;
+    private static final int ROCK_OF_THE_WORLD = 10;
+    private static final int GRASS_OF_THE_WORLD = 7;
+    private static final int RABBIT_OF_THE_WORLD = 12;
+    private static final int BEAR_OF_THE_WORLD = 100;
+    private static final double FIFTY_PERCENT_OF_THE_NUMBER = 0.5;
+    private static final double SEVENTY_PERCENT_OF_THE_NUMBER = 0.7;
+    private static final double EIGHTY_PERCENT_OF_THE_NUMBER = 0.8;
+
+
+    private static Map<String, Integer> maxCountEntity = new HashMap<>();
+    private static Map<String, Double> quantityAddedEntity = new HashMap<>();
+
+    private Entity entity;
+    private Supplier<? extends Entity> entitySupplier;
+    private boolean checkCreatedEntityInWorld = false;
+
+
+    public CreateEntityAction1(WorldMap worldMap, Supplier<? extends Entity> entitySupplier) {
         super(worldMap);
-        entity = t.get();
+        this.entitySupplier = entitySupplier;
+
+        createEntity();
+        entity.minusCount();
+
+        maxCountEntity.put("Rabbit", worldMap.getCountAllCell() / RABBIT_OF_THE_WORLD);
+        maxCountEntity.put("Grass", worldMap.getCountAllCell() / GRASS_OF_THE_WORLD);
+        maxCountEntity.put("Bear", worldMap.getCountAllCell() / BEAR_OF_THE_WORLD);
+        maxCountEntity.put("Tree", worldMap.getCountAllCell() / TREE_OF_THE_WORLD);
+        maxCountEntity.put("Rock", worldMap.getCountAllCell() / ROCK_OF_THE_WORLD);
+
+        quantityAddedEntity.put("Rabbit", SEVENTY_PERCENT_OF_THE_NUMBER);
+        quantityAddedEntity.put("Grass", FIFTY_PERCENT_OF_THE_NUMBER);
+        quantityAddedEntity.put("Bear", EIGHTY_PERCENT_OF_THE_NUMBER);
     }
 
     @Override
     public void action() {
+        int quantity = quantityEntity();
+        for (int i = 0; i < quantity; i++) {
 
-        for (int i = 0; i < 5/* quantityEntity*/; i++) {
+            createEntity();
+
             try {
                 worldMap.putFigure(worldMap.emptyRandomCoordinate(), entity);
             } catch (InvalidCoordinateException e) {
@@ -41,33 +65,43 @@ public class CreateEntityAction1 extends Action {
             } catch (OutOfWorldBoundsException e) {
                 throw new RuntimeException(e);
             }
+
         }
     }
 
-    private void quantityEntity(){
-        //todo с помощью сущности  находим в классе счетчик нужное значение для старта
-    }
-
-    public static void main(String[] args) {
-        WorldMap w = new WorldMap();
-
-        List<Entity> entityList = new ArrayList<>();
-        Collections.addAll(entityList, new Grass(),
-                new Tree(),
-                new Rock(),
-                new Rabbit(new BreadthFirstSearch(w)),
-                new Bear(new BreadthFirstSearch(w)));
-
-        WorldRender r = new WorldRender(w);
-        r.render();
-
-        for (Entity entity : entityList) {
-            CreateEntityAction1 createEntity = new CreateEntityAction1(w, () -> entity);
-            createEntity.action();
+    public int quantityEntity() {
+        if (!checkCreatedEntityInWorld) {
+            createdEntityInWorld();
+            return maxCount();
         }
 
-        r.render();
-
+        if (checkMinEntity()) {
+            return countRefreshEntity();
+        }
+        return 0;
     }
 
+    private void createdEntityInWorld() {
+        checkCreatedEntityInWorld = true;
+    }
+
+    private void createEntity() {
+        entity = entitySupplier.get();
+    }
+
+    private boolean checkMinEntity() {
+        return entity.getEntityCount() < maxCount() * FIFTY_PERCENT_OF_THE_NUMBER;
+    }
+
+    private int maxCount() {
+        return maxCountEntity.get(nameEntity());
+    }
+
+    private int countRefreshEntity() {
+        return (int) (maxCount() * quantityAddedEntity.get(nameEntity()));
+    }
+
+    private String nameEntity() {
+        return entity.getClass().getSimpleName();
+    }
 }
