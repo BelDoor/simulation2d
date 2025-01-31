@@ -1,12 +1,11 @@
 package by.darafeyeu.algoritm;
 
+import by.darafeyeu.coordinate.Coordinate;
+import by.darafeyeu.coordinate.CreatureMove;
 import by.darafeyeu.exception.FreeCell;
 import by.darafeyeu.exception.InvalidCoordinateException;
 import by.darafeyeu.exception.OutOfWorldBoundsException;
-import by.darafeyeu.coordinate.Coordinate;
-import by.darafeyeu.coordinate.CoordinateForAlgoritm;
-import by.darafeyeu.coordinate.CreatureMove;
-import by.darafeyeu.nature.animals.Animal;
+import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
 
 import java.util.ArrayList;
@@ -19,14 +18,15 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 
-public class BreadthFirstSearch extends AlgoritmSearchPath {
+public class BreadthFirstSearch extends AlgorithmSearchPath {
 
-    private List<CoordinateForAlgoritm> randomCoordinate;
-    private CoordinateForAlgoritm targetCoordinate;
-    private Map<CoordinateForAlgoritm, CoordinateForAlgoritm> beforeCells;
-    private Queue<CoordinateForAlgoritm> queueCell;
-    private CoordinateForAlgoritm currentCell;
+    private List<Coordinate> randomCoordinate;
+    private Coordinate targetCoordinate;
+    private Map<Coordinate, Coordinate> beforeCells;
+    private Queue<Coordinate> queueCell;
+    private Coordinate currentCell;
     protected int optionOfStep;
+
 
     public BreadthFirstSearch(WorldMap worldMap, int countOfDirection) {
         super(worldMap);
@@ -39,20 +39,20 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         resetToDefault();
     }
 
-    public List<Coordinate> getPath(Animal animal) {
+    public List<Coordinate> getPath(Coordinate start, Class<? extends Entity> target, int speed) {
         resetToDefault();
-        super.target = animal.getTargetFood();
-        super.speedAnimal = animal.getSpeedStep();
-        try {
-            this.currentCell = new CoordinateForAlgoritm(super.worldMap.getCoordinateEntity(animal));
-        } catch (InvalidCoordinateException e) {
-            throw new RuntimeException(e);
-        }
+
+        super.target = target;
+        //будем возращать чистый путь, а в животном будем делать шаг на нужноую координату по скорости.
+        super.speedAnimal = speed;
+        this.currentCell = start;
+
         return searchPath();
     }
 
     private void resetToDefault() {
-        CoordinateForAlgoritm defaultCell = new CoordinateForAlgoritm();
+
+        Coordinate defaultCell = new Coordinate();
         this.randomCoordinate = new ArrayList<>(Arrays.asList(defaultCell));
         this.targetCoordinate = defaultCell;
         this.beforeCells = new HashMap<>();
@@ -76,7 +76,7 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
     }
 
     private void saveCellNaighbour() {
-        for (CoordinateForAlgoritm cellNeighbour : cellNeighbours(currentCell)) {
+        for (Coordinate cellNeighbour : cellNeighbours(currentCell)) {
             if (beforeCells.containsKey(cellNeighbour)) {
                 continue;
             }
@@ -85,7 +85,7 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         }
     }
 
-    private boolean isTarget(CoordinateForAlgoritm coordinate) {
+    private boolean isTarget(Coordinate coordinate) {
         try {
             if (super.worldMap.getEntity(coordinate).getClass() == target) {
                 return true;
@@ -100,7 +100,8 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         return false;
     }
 
-    private void saveRandomCoordinate(CoordinateForAlgoritm currentCell) {
+    //реализовать в отдельный клас для выдачи хода с рандомным путем
+    private void saveRandomCoordinate(Coordinate currentCell) {
         int steepCurrentCell = currentCell.getStep();
 
         if (steepCurrentCell <= super.speedAnimal) {
@@ -115,15 +116,15 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         }
     }
 
-    private List<CoordinateForAlgoritm> cellNeighbours(CoordinateForAlgoritm currentCell) {
-        List<CoordinateForAlgoritm> neighbours = new ArrayList<>();
+    private List<Coordinate> cellNeighbours(Coordinate currentCell) {
+        List<Coordinate> neighbours = new ArrayList<>();
         for (int i = 0; i < optionOfStep; i++) {
             Coordinate step = CreatureMove.values()[i].getCoordinateMove();
             step = step.addStep(currentCell);
             if (isCellEmptyOrTarget(step, target)) {
-                CoordinateForAlgoritm steepAlgoritm = new CoordinateForAlgoritm(step);
-                steepAlgoritm.steepCount(currentCell.getStep());
-                neighbours.add(steepAlgoritm);
+                Coordinate steepAlgorithm = new Coordinate(step);
+                steepAlgorithm.steepCount(currentCell.getStep());
+                neighbours.add(steepAlgorithm);
             }
         }
         return neighbours;
@@ -137,7 +138,7 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         }
     }
 
-    private List<Coordinate> path(CoordinateForAlgoritm behindCell) {
+    private List<Coordinate> path(Coordinate behindCell) {
         List<Coordinate> path = new ArrayList<>();
         while (beforeCells.get(behindCell) != null) {
             path.add(behindCell);
@@ -148,14 +149,14 @@ public class BreadthFirstSearch extends AlgoritmSearchPath {
         return path;
     }
 
-    private CoordinateForAlgoritm randomRoad() {
+    private Coordinate randomRoad() {
         Random random = new Random();
         int numberRoad = random.nextInt(randomCoordinate.size());
         return randomCoordinate.get(numberRoad);
     }
 
     private boolean isChengTargetCoordinate() {
-        if (targetCoordinate.getHeight() == -1) {
+        if (targetCoordinate.getY() == -1) {
             return false;
         }
         return true;

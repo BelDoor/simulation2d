@@ -19,35 +19,35 @@ import java.util.Set;
 
 public final class WorldMap {
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
-    private static final int DEFAULT_LENGTH = 9;
-    private static final int DEFAULT_HEIGHT = 9;
-    private static final int MAX_LENGTH = 99;
-    private static final int MAX_HEIGHT = 99;
-    private static final int START_COORDINATE = 0;
+    private static final int DEFAULT_WIDTH_X = 9;
+    private static final int DEFAULT_HEIGHT_Y = 9;
+    private static final int MAX_WIDTH_X = 99;
+    private static final int MAX_HEIGHT_Y = 99;
+    private static final int NULL_POINT_FOR_WORLD = 0;
 
     private Set<Coordinate> tracers = new HashSet<>();
 
-    private final int sizeLength;
-    private final int sizeHeight;
+    private final int sizeWidthX;
+    private final int sizeHeightY;
 
 
     public WorldMap() {
-        this.sizeLength = DEFAULT_LENGTH;
-        this.sizeHeight = DEFAULT_HEIGHT;
+        this(DEFAULT_WIDTH_X, DEFAULT_HEIGHT_Y);
     }
 
-    public WorldMap(int length, int height) {
-        length = length - 1;
+    //не создавать то что не просят обработать проверку в классе симуляция но лучше в меню .
+    public WorldMap(int width, int height) {
+        width = width - 1;
         height = height - 1;
-        if ((length) < DEFAULT_LENGTH || (height) < DEFAULT_HEIGHT) {
-            this.sizeLength = DEFAULT_LENGTH;
-            this.sizeHeight = DEFAULT_HEIGHT;
-        } else if ((length) > MAX_LENGTH || (height) > MAX_HEIGHT) {
-            this.sizeLength = MAX_LENGTH;
-            this.sizeHeight = MAX_HEIGHT;
+        if ((width) < DEFAULT_WIDTH_X || (height) < DEFAULT_HEIGHT_Y) {
+            this.sizeWidthX = DEFAULT_WIDTH_X;
+            this.sizeHeightY = DEFAULT_HEIGHT_Y;
+        } else if ((width) > MAX_WIDTH_X || (height) > MAX_HEIGHT_Y) {
+            this.sizeWidthX = MAX_WIDTH_X;
+            this.sizeHeightY = MAX_HEIGHT_Y;
         } else {
-            this.sizeLength = length;
-            this.sizeHeight = height;
+            this.sizeWidthX = width;
+            this.sizeHeightY = height;
         }
     }
 
@@ -74,7 +74,7 @@ public final class WorldMap {
     public Coordinate emptyRandomCoordinate() {
         while (true) {
             int length = RandomNumber.randomParamCoordinate(getSizeLength());
-            int height = RandomNumber.randomParamCoordinate(getSizeHeight());
+            int height = RandomNumber.randomParamCoordinate(getSizeHeightY());
             Coordinate randomCoordinate = new Coordinate(length, height);
             if (!locationEntityMap.containsKey(randomCoordinate)) {
                 return randomCoordinate;
@@ -157,10 +157,10 @@ public final class WorldMap {
     }
 
     private boolean isCoordinateInMap(Coordinate coordinate) {
-        int height = coordinate.getHeight();
-        int length = coordinate.getLength();
-        return ((height >= START_COORDINATE && height <= this.sizeHeight) &&
-                (length >= START_COORDINATE && length <= this.sizeLength));
+        int height = coordinate.getY();
+        int length = coordinate.getX();
+        return ((height >= NULL_POINT_FOR_WORLD && height <= this.sizeHeightY) &&
+                (length >= NULL_POINT_FOR_WORLD && length <= this.sizeWidthX));
     }
 
     private Coordinate checkCoordinate(Coordinate currentCoordinate) throws InvalidCoordinateException {
@@ -174,18 +174,18 @@ public final class WorldMap {
     }
 
     public int getCountAllCell() {
-        return (getSizeHeight() + 1) * (getSizeLength() + 1);
+        return (getSizeHeightY() + 1) * (getSizeLength() + 1);
     }
 
     public int getSizeLength() {
-        return sizeLength;
+        return sizeWidthX;
     }
 
-    public int getSizeHeight() {
-        return sizeHeight;
+    public int getSizeHeightY() {
+        return sizeHeightY;
     }
 
-    public int getStartCoordinate() {
-        return START_COORDINATE;
+    public int getNullPointForWorld() {
+        return NULL_POINT_FOR_WORLD;
     }
 }

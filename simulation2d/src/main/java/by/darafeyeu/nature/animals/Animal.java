@@ -1,6 +1,6 @@
 package by.darafeyeu.nature.animals;
 
-import by.darafeyeu.algoritm.AlgoritmSearchPath;
+import by.darafeyeu.algoritm.AlgorithmSearchPath;
 import by.darafeyeu.random_number.RandomNumber;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
@@ -21,12 +21,14 @@ public abstract class Animal extends Entity {
     protected int defensePoint;
     protected int powerHit;
     private boolean targetCell = false;
-    protected AlgoritmSearchPath algoritmSearchPath;
+    protected AlgorithmSearchPath algorithmSearchPath;
     protected Class<? extends Entity> targetFood;
 
-    public List<Coordinate> pathSteps() {
+    public List<Coordinate> pathSteps(Coordinate start) {
         setTargetCell(false);
-        List<Coordinate> path = algoritmSearchPath.getPath(this);
+        //придумать что делать если нет найденых животных нужно ходить рандомно
+        //можно сделать класс который исчит рандомный маршрут на количество шагов вокрг объекта
+        List<Coordinate> path = algorithmSearchPath.getPath(start, targetFood, speedStep);
 
         int startIndexCoordinate = 0;
         int stepForSpeedAnimal = speedStep + 1;
@@ -96,14 +98,14 @@ public abstract class Animal extends Entity {
     }
 
     private void isTargetCell(Coordinate coordinate) {
-        targetCell = algoritmSearchPath.isTargetCoordinate(coordinate);
+        targetCell = algorithmSearchPath.isTargetCoordinate(coordinate);
     }
 
 
     public void drainEnergyFromAnimal() {
         if ((energy - minusEnergy) > minEnergy) {
             energy = energy - minusEnergy;
-            if(energy <= minEnergy) {
+            if (energy <= minEnergy) {
                 getDamage(1);
             }
         } else {
@@ -112,7 +114,7 @@ public abstract class Animal extends Entity {
         }
     }
 
-    public void addEnergyToAnimal(){
+    public void addEnergyToAnimal() {
         energy = maxEnergy;
     }
 

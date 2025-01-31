@@ -10,16 +10,16 @@ import by.darafeyeu.world.WorldMap;
 
 import java.util.List;
 
-public abstract class AlgoritmSearchPath {
+public abstract class AlgorithmSearchPath {
     protected final WorldMap worldMap;
     protected Class<? extends Entity> target;
     protected int speedAnimal;
 
-    protected AlgoritmSearchPath(WorldMap worldMap) {
+    protected AlgorithmSearchPath(WorldMap worldMap) {
         this.worldMap = worldMap;
     }
 
-    public abstract List<Coordinate> getPath(Animal animal);
+    public abstract List<Coordinate> getPath(Coordinate start, Class<? extends Entity> target, int speed);
 
     protected boolean isCellEmptyOrTarget(Coordinate coordinate, Class<? extends Entity> target) {
         Entity entityForCell;

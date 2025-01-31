@@ -15,29 +15,21 @@ public class CreateEntityAction extends Action {
 
     private static final int TREE_OF_THE_WORLD = 11;
     private static final int ROCK_OF_THE_WORLD = 10;
-    private static final int GRASS_OF_THE_WORLD = 7;
+    private static final int GRASS_OF_THE_WORLD = 5;
     private static final int RABBIT_OF_THE_WORLD = 12;
     private static final int BEAR_OF_THE_WORLD = 100;
     private static final double FIFTY_PERCENT_OF_THE_NUMBER = 0.5;
     private static final double SEVENTY_PERCENT_OF_THE_NUMBER = 0.7;
     private static final double EIGHTY_PERCENT_OF_THE_NUMBER = 0.8;
 
-
-    private static Map<String, Integer> maxCountEntity = new HashMap<>();
-    private static Map<String, Double> quantityAddedEntity = new HashMap<>();
+    private  Map<String, Integer> maxCountEntity = new HashMap<>();
+    private  Map<String, Double> quantityAddedEntity = new HashMap<>();
 
     private Entity entity;
     private Supplier<? extends Entity> entitySupplier;
     private boolean checkCreatedEntityInWorld = false;
 
-
-    public CreateEntityAction(WorldMap worldMap, Supplier<? extends Entity> entitySupplier) {
-        super(worldMap);
-        this.entitySupplier = entitySupplier;
-
-        createEntity();
-        entity.minusCount();
-
+    {
         maxCountEntity.put("Rabbit", worldMap.getCountAllCell() / RABBIT_OF_THE_WORLD);
         maxCountEntity.put("Grass", worldMap.getCountAllCell() / GRASS_OF_THE_WORLD);
         maxCountEntity.put("Bear", worldMap.getCountAllCell() / BEAR_OF_THE_WORLD);
@@ -48,6 +40,18 @@ public class CreateEntityAction extends Action {
         quantityAddedEntity.put("Grass", FIFTY_PERCENT_OF_THE_NUMBER);
         quantityAddedEntity.put("Bear", EIGHTY_PERCENT_OF_THE_NUMBER);
     }
+
+    public CreateEntityAction(WorldMap worldMap, Supplier<? extends Entity> entitySupplier) {
+        super(worldMap);
+        this.entitySupplier = entitySupplier;
+
+        createEntity();
+        entity.minusCount();
+
+    }
+
+
+
 
     @Override
     public void action() {

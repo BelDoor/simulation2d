@@ -3,35 +3,53 @@ package by.darafeyeu.coordinate;
 import java.util.Objects;
 
 public class Coordinate {
-    private final Integer length;
-    private final Integer height;
+    private final Integer x;
+    private final Integer y;
+
+    private static int DEFAULT_STEP = -1;
+    private static int COORDINATE_STEP = 0;
+    private int step;
 
     @Override
     public String toString() {
-        return String.format("Coordinate:\nLength %d \nHeight %d", length, height);
+        return String.format("Coordinate:\nLength %d \nHeight %d", x, y);
     }
 
-    public Coordinate(Integer length, Integer height) {
-        this.length = length;
-        this.height = height;
+    public Coordinate(){
+        this(DEFAULT_STEP, DEFAULT_STEP);
+        this.step = DEFAULT_STEP;
+    }
+
+    public Coordinate(Integer x, Integer y) {
+        this.x = x;
+        this.y = y;
     }
 
     public Coordinate(Coordinate coordinate) {
-        this.length = coordinate.length;
-        this.height = coordinate.height;
+        this(coordinate.x, coordinate.y);
     }
 
-    public Integer getLength() {
-        return length;
+    public Integer getX() {
+        return x;
     }
 
-    public Integer getHeight() {
-        return height;
+    public Integer getY() {
+        return y;
     }
 
+    public int getStep() {
+        return step;
+    }
+
+
+    //todo переименнуй
     public Coordinate addStep(Coordinate move) {
-        return new Coordinate(this.length + move.length,
-                this.height + move.height);
+        return new Coordinate(this.x + move.x,
+                this.y + move.y);
+    }
+
+    public void steepCount(int step) {
+        this.step = step + 1;
     }
 
     @Override
@@ -39,11 +57,11 @@ public class Coordinate {
         if (this == o) return true;
         if (!(o instanceof Coordinate)) return false;
         Coordinate that = (Coordinate) o;
-        return Objects.equals(length, that.length) && Objects.equals(height, that.height);
+        return Objects.equals(x, that.x) && Objects.equals(y, that.y);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(length, height);
+        return Objects.hash(x, y);
     }
 }

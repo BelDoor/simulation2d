@@ -26,7 +26,13 @@ public class MoveAnimalsAction extends Action {
             Animal animal = animals.get(i);
             animal.drainEnergyFromAnimal();
             if (!animal.isDead()) {
-                List<Coordinate> pathSteps = animal.pathSteps();
+                //todo убрать ненужные ошибки в world
+                List<Coordinate> pathSteps = null;
+                try {
+                    pathSteps = animal.pathSteps(worldMap.getCoordinateEntity(animal));
+                } catch (InvalidCoordinateException e) {
+                    throw new RuntimeException(e);
+                }
                 worldMap.setTracers(pathSteps);
                 int indexLastStep = pathSteps.size() - 1;
                 int indexLastButOneStep = 0;

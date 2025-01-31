@@ -28,9 +28,9 @@ public class WorldRender {
     public void render() {
         System.out.println(SPRITE_DELETED);
 
-        for (int length = worldMap.getStartCoordinate(); length <= worldMap.getSizeLength(); length++) {
+        for (int length = worldMap.getNullPointForWorld(); length <= worldMap.getSizeLength(); length++) {
             this.line = new StringBuilder();
-            for (int height = worldMap.getStartCoordinate(); height <= worldMap.getSizeHeight(); height++) {
+            for (int height = worldMap.getNullPointForWorld(); height <= worldMap.getSizeHeightY(); height++) {
                 paintCoordinate(new Coordinate(length, height));
             }
             this.line.append(ANSI_RESET);

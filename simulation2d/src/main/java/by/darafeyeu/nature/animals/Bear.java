@@ -1,6 +1,6 @@
 package by.darafeyeu.nature.animals;
 
-import by.darafeyeu.algoritm.AlgoritmSearchPath;
+import by.darafeyeu.algoritm.AlgorithmSearchPath;
 
 public class Bear extends Animal {
     public static final int SPEED_STEP = 2;
@@ -14,8 +14,8 @@ public class Bear extends Animal {
     private static final Class<Rabbit> TARGET_FOOD = Rabbit.class;
 
 
-    public Bear(AlgoritmSearchPath algoritm) {
-        super.algoritmSearchPath = algoritm;
+    public Bear(AlgorithmSearchPath algoritm) {
+        super.algorithmSearchPath = algoritm;
         super.currentHP = START_HP;
         super.speedStep = SPEED_STEP;
         super.targetFood = TARGET_FOOD;
