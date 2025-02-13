@@ -1,6 +1,9 @@
 package by.darafeyeu.nature.animals;
 
 import by.darafeyeu.algoritm.AlgorithmSearchPath;
+import by.darafeyeu.nature.animals.parametr.HealthPointsParameter;
+import by.darafeyeu.nature.animals.parametr.MoveParameter;
+import by.darafeyeu.nature.animals.parametr.SearchParameter;
 import by.darafeyeu.random_number.RandomNumber;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
@@ -8,30 +11,26 @@ import by.darafeyeu.nature.Entity;
 import java.util.List;
 
 public abstract class Animal extends Entity {
-    protected int currentHP;
-    protected int maxHP;
-    private final int minHP = 0;
-    protected int energy;
-    protected int minusEnergy;
-    protected int maxEnergy;
-    private final int minEnergy = 0;
 
-    protected int speedStep;
+    private HealthPointsParameter hp;
+    private MoveParameter moveParameter;
+    private SearchParameter searchParameter;
 
-    protected int defensePoint;
-    protected int powerHit;
     private boolean targetCell = false;
-    protected AlgorithmSearchPath algorithmSearchPath;
-    protected Class<? extends Entity> targetFood;
+
+    public Animal(HealthPointsParameter hp, MoveParameter moveParameter, SearchParameter searchParameter) {
+        this.hp = hp;
+        this.moveParameter = moveParameter;
+        this.searchParameter = searchParameter;
+    }
 
     public List<Coordinate> pathSteps(Coordinate start) {
         setTargetCell(false);
-        //придумать что делать если нет найденых животных нужно ходить рандомно
-        //можно сделать класс который исчит рандомный маршрут на количество шагов вокрг объекта
-        List<Coordinate> path = algorithmSearchPath.getPath(start, targetFood, speedStep);
+
+        List<Coordinate> path = searchParameter.getAlgorithm().getPath(start, searchParameter.getTargetFood(), searchParameter.getSpeedStep());
 
         int startIndexCoordinate = 0;
-        int stepForSpeedAnimal = speedStep + 1;
+        int stepForSpeedAnimal = searchParameter.getSpeedStep() + 1;
         int finishIndexStep = path.size() - 1;
 
         List<Coordinate> coordinates;
@@ -46,16 +45,11 @@ public abstract class Animal extends Entity {
     }
 
     public int attackForOpponent() {
-        return powerHit;
+        return moveParameter.getPowerHit();
     }
 
     public void addHP() {
-        int plusHP = RandomNumber.d3();
-        if ((currentHP + plusHP) <= maxHP) {
-            currentHP = currentHP + plusHP;
-        } else {
-            currentHP = maxHP;
-        }
+       hp.addHP();
     }
 
     public int attackOnDefenseOpponent() {
@@ -63,30 +57,15 @@ public abstract class Animal extends Entity {
     }
 
     public boolean isDead() {
-        return currentHP <= minHP;
+       return hp.isDead();
     }
 
     public boolean checkMyDefense(int damageOnDefense) {
-        if (defensePoint < damageOnDefense) {
-            return true;
-        }
-        return false;
+        return hp.checkMyDefense(damageOnDefense);
     }
 
-    public void getDamage(int attackForAponent) {
-        if ((currentHP - attackForAponent) > minHP) {
-            currentHP = currentHP - attackForAponent;
-        } else {
-            currentHP = minHP;
-        }
-    }
-
-    public int getSpeedStep() {
-        return speedStep;
-    }
-
-    public Class<? extends Entity> getTargetFood() {
-        return targetFood;
+    public void getDamage(int attackForOpponent) {
+        hp.getDamage(attackForOpponent);
     }
 
     public boolean hasSearchTargetBeenFound() {
@@ -98,24 +77,17 @@ public abstract class Animal extends Entity {
     }
 
     private void isTargetCell(Coordinate coordinate) {
-        targetCell = algorithmSearchPath.isTargetCoordinate(coordinate);
+        targetCell = searchParameter.getAlgorithm().isTargetCoordinate(coordinate);
     }
 
 
     public void drainEnergyFromAnimal() {
-        if ((energy - minusEnergy) > minEnergy) {
-            energy = energy - minusEnergy;
-            if (energy <= minEnergy) {
-                getDamage(1);
-            }
-        } else {
-            energy = minEnergy;
-            getDamage(1);
-        }
+        moveParameter.setMinusEnergy();
+        getDamage(moveParameter.drainEnergyFromAnimal());
     }
 
-    public void addEnergyToAnimal() {
-        energy = maxEnergy;
+    public void restoreEnergyToAnimal() {
+        moveParameter.addFullEnergy();
     }
 
 }

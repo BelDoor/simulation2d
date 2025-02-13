@@ -109,7 +109,7 @@ public class MoveAnimalsAction extends Action {
 
     private void eat(Animal animal){
         animal.addHP();
-        animal.addEnergyToAnimal();
+        animal.restoreEnergyToAnimal();
     }
 
     private boolean isEntityRabbit(Entity entity) {
