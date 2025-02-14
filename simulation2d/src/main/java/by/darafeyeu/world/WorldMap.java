@@ -28,18 +28,11 @@ public final class WorldMap {
     //todo задавать дефолтные значения в классе симуляция или меню
     private static final int DEFAULT_WIDTH_X = 9;
     private static final int DEFAULT_HEIGHT_Y = 9;
-    private static final int MAX_WIDTH_X = 99;
-    private static final int MAX_HEIGHT_Y = 99;
 
     private static final int NULL_POINT_FOR_WORLD = 0;
 
-
-    //todo сохранять все трасеры животных в другом классе
-    private Set<Coordinate> tracers = new HashSet<>();
-
     private final int sizeWidthX;
     private final int sizeHeightY;
-
 
     public WorldMap() {
         this(DEFAULT_WIDTH_X, DEFAULT_HEIGHT_Y);
@@ -47,18 +40,8 @@ public final class WorldMap {
 
     //не создавать то что не просят обработать проверку в классе симуляция но лучше в меню .
     public WorldMap(int width, int height) {
-        width = width - 1;
-        height = height - 1;
-        if ((width) < DEFAULT_WIDTH_X || (height) < DEFAULT_HEIGHT_Y) {
-            this.sizeWidthX = DEFAULT_WIDTH_X;
-            this.sizeHeightY = DEFAULT_HEIGHT_Y;
-        } else if ((width) > MAX_WIDTH_X || (height) > MAX_HEIGHT_Y) {
-            this.sizeWidthX = MAX_WIDTH_X;
-            this.sizeHeightY = MAX_HEIGHT_Y;
-        } else {
-            this.sizeWidthX = width;
-            this.sizeHeightY = height;
-        }
+        this.sizeWidthX = width;
+        this.sizeHeightY = height;
     }
 
     //todo in class work with work worldMap
