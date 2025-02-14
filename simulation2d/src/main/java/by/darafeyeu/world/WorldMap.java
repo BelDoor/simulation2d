@@ -61,29 +61,6 @@ public final class WorldMap {
         }
     }
 
-    //todo туда же куда и traser
-    protected void cleanTracers() {
-        tracers.clear();
-    }
-
-    public void setTracers(List<Coordinate> allSteps) {
-        for (int i = 0; i < allSteps.size(); i++) {
-            Coordinate coordinate = allSteps.get(i);
-
-            if (!tracers.contains(coordinate)) {
-                tracers.add(coordinate);
-            }
-        }
-    }
-
-    //todo туда же куда и traser
-    protected Set<Coordinate> getTracers() {
-        Set<Coordinate> coordinates = new HashSet<>();
-        coordinates.addAll(tracers);
-        return coordinates;
-    }
-
-
     //todo in class work with work worldMap
     //в другой класс
     //класс работает со списком сущностей, и генерирует пустую координату.
@@ -97,7 +74,7 @@ public final class WorldMap {
             }
         }
     }
-    
+
     public List<Entity> getEntities() {
         List<Entity> entityList = new ArrayList<>();
         for (Map.Entry<Coordinate, Entity> pair : locationEntityMap.entrySet()) {

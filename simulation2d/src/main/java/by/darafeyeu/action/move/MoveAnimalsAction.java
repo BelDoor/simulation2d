@@ -35,7 +35,6 @@ public class MoveAnimalsAction extends Action {
                 } catch (InvalidCoordinateException e) {
                     throw new RuntimeException(e);
                 }
-                worldMap.setTracers(pathSteps);
                 int indexLastStep = pathSteps.size() - 1;
                 int indexLastButOneStep = 0;
                 if (indexLastStep > 1) {
