@@ -10,19 +10,21 @@ import by.darafeyeu.nature.animals.Animal;
 import by.darafeyeu.nature.animals.Rabbit;
 import by.darafeyeu.world.WorldMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MoveAnimalsAction extends Action {
     List<Animal> animals;
+
     public MoveAnimalsAction(WorldMap worldMap) {
         super(worldMap);
     }
 
     public void action() {
-        animals = worldMap.getAnimals();
+        setAnimals(worldMap.getEntities());
 
-        for (int i = 0; i < animals.size() ; i++) {
+        for (int i = 0; i < animals.size(); i++) {
             Animal animal = animals.get(i);
             animal.drainEnergyFromAnimal();
             if (!animal.isDead()) {
@@ -45,18 +47,28 @@ public class MoveAnimalsAction extends Action {
                     move(animal, pathSteps.get(indexLastButOneStep));
                     fight(animal, pathSteps.get(indexLastStep));
                 }
-            }else {
+            } else {
                 removeEntity(animal);
                 animal.minusCount();
             }
         }
     }
 
+    private void setAnimals(List<Entity> entityList) {
+        List<Animal> animals = new ArrayList<>();
+        for (Entity entity : entityList) {
+            if (entity instanceof Animal) {
+                animals.add((Animal) entity);
+            }
+        }
+        this.animals = animals;
+    }
+
 
     private void move(Animal animal, Coordinate finish) {
         removeEntity(animal);
         try {
-            worldMap.putFigure(finish, animal);
+            worldMap.putEntityInWorld(finish, animal);
         } catch (OutOfWorldBoundsException e) {
             throw new RuntimeException(e);
         } catch (InvalidCoordinateException e) {
@@ -101,13 +113,13 @@ public class MoveAnimalsAction extends Action {
         }
     }
 
-    private void removeEntityAndDecrement(Entity entity){
+    private void removeEntityAndDecrement(Entity entity) {
         removeEntity(entity);
         animals.remove(entity);
         entity.minusCount();
     }
 
-    private void eat(Animal animal){
+    private void eat(Animal animal) {
         animal.addHP();
         animal.restoreEnergyToAnimal();
     }

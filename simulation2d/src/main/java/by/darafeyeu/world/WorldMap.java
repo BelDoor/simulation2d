@@ -17,14 +17,24 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+//todo - вставить, выдать одно существо и список всех хранимых существ, удалить
+//оставить валидацию переработанную и методы обслуживающие туду
+//все остальные разгрупировать по классам
+
 public final class WorldMap {
+
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
+
+    //todo задавать дефолтные значения в классе симуляция или меню
     private static final int DEFAULT_WIDTH_X = 9;
     private static final int DEFAULT_HEIGHT_Y = 9;
     private static final int MAX_WIDTH_X = 99;
     private static final int MAX_HEIGHT_Y = 99;
+
     private static final int NULL_POINT_FOR_WORLD = 0;
 
+
+    //todo сохранять все трасеры животных в другом классе
     private Set<Coordinate> tracers = new HashSet<>();
 
     private final int sizeWidthX;
@@ -51,6 +61,7 @@ public final class WorldMap {
         }
     }
 
+    //todo туда же куда и traser
     protected void cleanTracers() {
         tracers.clear();
     }
@@ -65,12 +76,17 @@ public final class WorldMap {
         }
     }
 
+    //todo туда же куда и traser
     protected Set<Coordinate> getTracers() {
         Set<Coordinate> coordinates = new HashSet<>();
         coordinates.addAll(tracers);
         return coordinates;
     }
 
+
+    //todo in class work with work worldMap
+    //в другой класс
+    //класс работает со списком сущностей, и генерирует пустую координату.
     public Coordinate emptyRandomCoordinate() {
         while (true) {
             int length = RandomNumber.randomParamCoordinate(getSizeLength());
@@ -81,18 +97,17 @@ public final class WorldMap {
             }
         }
     }
-
-    public List<Animal> getAnimals() {
-        List<Animal> animals = new ArrayList<>();
+    
+    public List<Entity> getEntities() {
+        List<Entity> entityList = new ArrayList<>();
         for (Map.Entry<Coordinate, Entity> pair : locationEntityMap.entrySet()) {
-            Entity entity = pair.getValue();
-            if (entity instanceof Animal) {
-                animals.add((Animal) entity);
-            }
+            entityList.add(pair.getValue());
         }
-        return animals;
+        return entityList;
     }
 
+    //todo перекидываем в другой класс
+    //класс который работает с существами и координатами
     public Coordinate getCoordinateEntity(Entity entity) throws InvalidCoordinateException {
         Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
@@ -104,6 +119,9 @@ public final class WorldMap {
         throw new InvalidCoordinateException("Empty coordinate");
     }
 
+    //todo создать метод возвращающей список сущностей
+
+    //оставляем: выдать одну сущность
     public Entity getEntity(Coordinate currentCoordinate) throws OutOfWorldBoundsException,
             InvalidCoordinateException, FreeCell {
         if (isOccupiedCellInWorld(currentCoordinate)) {
@@ -112,6 +130,7 @@ public final class WorldMap {
         throw new FreeCell(currentCoordinate);
     }
 
+    //оставляем тут
     public void removeEntity(Coordinate currentCoordinate) throws
             OutOfWorldBoundsException, InvalidCoordinateException {
         if (isOccupiedCellInWorld(currentCoordinate)) {
@@ -119,7 +138,10 @@ public final class WorldMap {
         }
     }
 
-    public void putFigure(Coordinate currentCoordinate, Entity entity) throws InvalidCoordinateException,
+    //todo мы вставляем сущность
+    //остаеться в классе
+    //todo избавиться от исключение
+    public void putEntityInWorld(Coordinate currentCoordinate, Entity entity) throws InvalidCoordinateException,
             InvalidEntityException, OutOfWorldBoundsException {
         checkEntity(entity);
         if (isFreeCellInWorld(currentCoordinate)) {
@@ -136,6 +158,10 @@ public final class WorldMap {
         return true;
     }
 
+
+    //todo переносим в другой класс
+    // проверяет пуста ли наша координата
+
     private boolean isFreeCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
             OutOfWorldBoundsException {
         isValidCoordinate(coordinate);
@@ -145,9 +171,12 @@ public final class WorldMap {
         return true;
     }
 
+
+    //todo викидывает сообщение об ошибке переделать метод или переименовать
     public boolean isFreeCell(Coordinate coordinate) {
         return !locationEntityMap.containsKey(coordinate);
     }
+
 
     private boolean isValidCoordinate(Coordinate coordinate) throws InvalidCoordinateException, OutOfWorldBoundsException {
         if (!isCoordinateInMap(checkCoordinate(coordinate))) {
@@ -156,6 +185,8 @@ public final class WorldMap {
         return true;
     }
 
+
+    //todo валидация координаты проверка ее на вход в карту
     private boolean isCoordinateInMap(Coordinate coordinate) {
         int height = coordinate.getY();
         int length = coordinate.getX();
@@ -163,11 +194,14 @@ public final class WorldMap {
                 (length >= NULL_POINT_FOR_WORLD && length <= this.sizeWidthX));
     }
 
+
+    //todo будем возвращать Optional
     private Coordinate checkCoordinate(Coordinate currentCoordinate) throws InvalidCoordinateException {
         return Optional.ofNullable(currentCoordinate)
                 .orElseThrow(() -> new InvalidCoordinateException("Empty coordinate"));
     }
 
+    //todo переделать на работу с Optional
     private Entity checkEntity(Entity entity) throws InvalidEntityException {
         return Optional.ofNullable(entity)
                 .orElseThrow(() -> new InvalidEntityException("Empty Entity"));
@@ -185,6 +219,7 @@ public final class WorldMap {
         return sizeHeightY;
     }
 
+    //todo создать константу в render
     public int getNullPointForWorld() {
         return NULL_POINT_FOR_WORLD;
     }
