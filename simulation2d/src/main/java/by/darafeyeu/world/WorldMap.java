@@ -25,18 +25,9 @@ public final class WorldMap {
 
     private Map<Coordinate, Entity> locationEntityMap = new HashMap<>();
 
-    //todo задавать дефолтные значения в классе симуляция или меню
-    private static final int DEFAULT_WIDTH_X = 9;
-    private static final int DEFAULT_HEIGHT_Y = 9;
-
     private static final int NULL_POINT_FOR_WORLD = 0;
-
     private final int sizeWidthX;
     private final int sizeHeightY;
-
-    public WorldMap() {
-        this(DEFAULT_WIDTH_X, DEFAULT_HEIGHT_Y);
-    }
 
     //не создавать то что не просят обработать проверку в классе симуляция но лучше в меню .
     public WorldMap(int width, int height) {
@@ -46,7 +37,7 @@ public final class WorldMap {
 
     //todo in class work with work worldMap
     //в другой класс
-    //класс работает со списком сущностей, и генерирует пустую координату.
+    //todo класс работает со списком сущностей, и генерирует пустую координату.
     public Coordinate emptyRandomCoordinate() {
         while (true) {
             int length = RandomNumber.randomParamCoordinate(getSizeLength());
@@ -58,16 +49,9 @@ public final class WorldMap {
         }
     }
 
-    public List<Entity> getEntities() {
-        List<Entity> entityList = new ArrayList<>();
-        for (Map.Entry<Coordinate, Entity> pair : locationEntityMap.entrySet()) {
-            entityList.add(pair.getValue());
-        }
-        return entityList;
-    }
 
     //todo перекидываем в другой класс
-    //класс который работает с существами и координатами
+    //класс который работает с существами и COORDINATE
     public Coordinate getCoordinateEntity(Entity entity) throws InvalidCoordinateException {
         Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
@@ -79,9 +63,18 @@ public final class WorldMap {
         throw new InvalidCoordinateException("Empty coordinate");
     }
 
-    //todo создать метод возвращающей список сущностей
-
     //оставляем: выдать одну сущность
+
+    public List<Entity> getEntities() {
+        List<Entity> entityList = new ArrayList<>();
+        for (Map.Entry<Coordinate, Entity> pair : locationEntityMap.entrySet()) {
+            entityList.add(pair.getValue());
+        }
+        return entityList;
+    }
+
+    //todo в BreadFirstSearch нужно переделать метод is target так чтоб при пустой координате мы обрабатываои пустой оптинал
+
     public Entity getEntity(Coordinate currentCoordinate) throws OutOfWorldBoundsException,
             InvalidCoordinateException, FreeCell {
         if (isOccupiedCellInWorld(currentCoordinate)) {
@@ -109,6 +102,7 @@ public final class WorldMap {
         }
     }
 
+    //todo сделать проверку опшион который вернет  isValidCoordinate
     private boolean isOccupiedCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
             OutOfWorldBoundsException {
         isValidCoordinate(coordinate);
@@ -138,6 +132,7 @@ public final class WorldMap {
     }
 
 
+    //todo возвращает Optionsl с нулем либо объектом
     private boolean isValidCoordinate(Coordinate coordinate) throws InvalidCoordinateException, OutOfWorldBoundsException {
         if (!isCoordinateInMap(checkCoordinate(coordinate))) {
             throw new OutOfWorldBoundsException("Сoordinate is outside the map boundaries: " + coordinate);
@@ -145,6 +140,11 @@ public final class WorldMap {
         return true;
     }
 
+
+    //клон isValidCoordinate
+    private boolean isValidCoordinateNotException(Coordinate coordinate) {
+        return !isCoordinateInMap(optionalCoordinate(coordinate));
+    }
 
     //todo валидация координаты проверка ее на вход в карту
     private boolean isCoordinateInMap(Coordinate coordinate) {
@@ -154,11 +154,30 @@ public final class WorldMap {
                 (length >= NULL_POINT_FOR_WORLD && length <= this.sizeWidthX));
     }
 
+    private boolean isCoordinateInMap(Optional<Coordinate> coordinate) {
+        int height;
+        int length;
+
+        if (coordinate.isPresent()) {
+            height = coordinate.get().getY();
+            length = coordinate.get().getX();
+        } else {
+            return false;
+        }
+
+        return ((height >= NULL_POINT_FOR_WORLD && height <= this.sizeHeightY) &&
+                (length >= NULL_POINT_FOR_WORLD && length <= this.sizeWidthX));
+    }
+
 
     //todo будем возвращать Optional
     private Coordinate checkCoordinate(Coordinate currentCoordinate) throws InvalidCoordinateException {
         return Optional.ofNullable(currentCoordinate)
                 .orElseThrow(() -> new InvalidCoordinateException("Empty coordinate"));
+    }
+
+    private Optional<Coordinate> optionalCoordinate(Coordinate currentCoordinate) {
+        return Optional.ofNullable(currentCoordinate);
     }
 
     //todo переделать на работу с Optional
@@ -177,10 +196,5 @@ public final class WorldMap {
 
     public int getSizeHeightY() {
         return sizeHeightY;
-    }
-
-    //todo создать константу в render
-    public int getNullPointForWorld() {
-        return NULL_POINT_FOR_WORLD;
     }
 }
