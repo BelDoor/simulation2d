@@ -99,7 +99,7 @@ public class Menu {
     }
 
     private boolean correctSizeMap(int size) {
-        return (size >= 7 && size <= 100);
+        return (size >= 9 && size <= 100);
     }
 
     private int enterNumber(String message) {

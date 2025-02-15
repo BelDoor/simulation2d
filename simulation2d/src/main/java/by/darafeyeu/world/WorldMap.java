@@ -86,7 +86,7 @@ public final class WorldMap {
     public boolean isOccupiedCellInWorld(Coordinate coordinate) {
         return (isValidCoordinate(coordinate) && locationEntityMap.containsKey(coordinate));
     }
-    
+
     private boolean isFreeCellInWorld(Coordinate coordinate) {
         return isValidCoordinate(coordinate) && isFreeCell(coordinate);
     }
