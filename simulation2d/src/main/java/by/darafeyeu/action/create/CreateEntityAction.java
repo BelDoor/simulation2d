@@ -1,9 +1,9 @@
 package by.darafeyeu.action.create;
 
 import by.darafeyeu.action.Action;
-import by.darafeyeu.exception.InvalidCoordinateException;
-import by.darafeyeu.exception.InvalidEntityException;
-import by.darafeyeu.exception.OutOfWorldBoundsException;
+//import by.darafeyeu.exception.InvalidCoordinateException;
+//import by.darafeyeu.exception.InvalidEntityException;
+//import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
 
@@ -17,7 +17,7 @@ public class CreateEntityAction extends Action {
     private static final int ROCK_OF_THE_WORLD = 10;
     private static final int GRASS_OF_THE_WORLD = 5;
     private static final int RABBIT_OF_THE_WORLD = 12;
-    private static final int BEAR_OF_THE_WORLD = 100;
+    private static final int BEAR_OF_THE_WORLD = 85;
     private static final double FIFTY_PERCENT_OF_THE_NUMBER = 0.5;
     private static final double SEVENTY_PERCENT_OF_THE_NUMBER = 0.7;
     private static final double EIGHTY_PERCENT_OF_THE_NUMBER = 0.8;
@@ -47,7 +47,6 @@ public class CreateEntityAction extends Action {
 
         createEntity();
         entity.minusCount();
-
     }
 
 
@@ -59,16 +58,8 @@ public class CreateEntityAction extends Action {
         for (int i = 0; i < quantity; i++) {
 
             createEntity();
+            worldMap.addEntityInWorld(worldMap.emptyRandomCoordinate(), entity);
 
-            try {
-                worldMap.putFigure(worldMap.emptyRandomCoordinate(), entity);
-            } catch (InvalidCoordinateException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidEntityException e) {
-                throw new RuntimeException(e);
-            } catch (OutOfWorldBoundsException e) {
-                throw new RuntimeException(e);
-            }
 
         }
     }

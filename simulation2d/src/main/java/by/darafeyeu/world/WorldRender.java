@@ -1,12 +1,14 @@
 package by.darafeyeu.world;
 
-import by.darafeyeu.exception.InvalidCoordinateException;
-import by.darafeyeu.exception.OutOfWorldBoundsException;
+//import by.darafeyeu.exception.InvalidCoordinateException;
+//import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
 public class WorldRender {
     private WorldMap worldMap;
+
+    private static final int NULL_POINT_FOR_WORLD = 0;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String EMPTY_CELL = "🏻";
@@ -26,9 +28,9 @@ public class WorldRender {
     public void render() {
         System.out.println(SPRITE_DELETED);
 
-        for (int length = worldMap.getNullPointForWorld(); length <= worldMap.getSizeLength(); length++) {
+        for (int length = NULL_POINT_FOR_WORLD; length <= worldMap.getSizeLength(); length++) {
             this.line = new StringBuilder();
-            for (int height = worldMap.getNullPointForWorld(); height <= worldMap.getSizeHeightY(); height++) {
+            for (int height = NULL_POINT_FOR_WORLD; height <= worldMap.getSizeHeightY(); height++) {
                 paintCoordinate(new Coordinate(length, height));
             }
             this.line.append(ANSI_RESET);
@@ -46,14 +48,22 @@ public class WorldRender {
     }
 
     private void paintEntity(Coordinate coordinate) {
-        try {
-            Entity entity = worldMap.getEntity(coordinate);
+
+        if(worldMap.getOptionalEntity(coordinate).isPresent()){
+            Entity entity = worldMap.getOptionalEntity(coordinate).get();
             this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
-        } catch (InvalidCoordinateException e) {
-            this.line.append(getSpriteForEmptySquare());
-        } catch (OutOfWorldBoundsException e) {
+        } else {
             this.line.append(getSpriteForEmptySquare());
         }
+
+//        try {
+//            Entity entity = worldMap.getEntity(coordinate);
+//            this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
+//        } catch (InvalidCoordinateException e) {
+//            this.line.append(getSpriteForEmptySquare());
+//        } catch (OutOfWorldBoundsException e) {
+//            this.line.append(getSpriteForEmptySquare());
+//        }
     }
 
     private String getEntitySprite(String nameEntity) {

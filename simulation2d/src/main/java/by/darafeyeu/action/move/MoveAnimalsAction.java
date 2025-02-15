@@ -1,9 +1,9 @@
 package by.darafeyeu.action.move;
 
 import by.darafeyeu.action.Action;
-import by.darafeyeu.exception.InvalidCoordinateException;
-import by.darafeyeu.exception.InvalidEntityException;
-import by.darafeyeu.exception.OutOfWorldBoundsException;
+//import by.darafeyeu.exception.InvalidCoordinateException;
+//import by.darafeyeu.exception.InvalidEntityException;
+//import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;
@@ -26,20 +26,26 @@ public class MoveAnimalsAction extends Action {
 
         for (int i = 0; i < animals.size(); i++) {
             Animal animal = animals.get(i);
+
             animal.drainEnergyFromAnimal();
+
             if (!animal.isDead()) {
                 //todo убрать ненужные ошибки в world
                 List<Coordinate> pathSteps = null;
-                try {
-                    pathSteps = animal.pathSteps(worldMap.getCoordinateEntity(animal));
-                } catch (InvalidCoordinateException e) {
-                    throw new RuntimeException(e);
+                //todo создать класс для проверке есть ли сущность на карте  взывать метод проверки
+                //todo затем в конструкции иф при ок результате вызывать метод достающий координату
+                if(worldMap.getOptionalCoordinateEntity(animal).isPresent()) {
+                    pathSteps = animal.pathSteps(worldMap.getOptionalCoordinateEntity(animal).get());
+                } else {
+                    continue;
                 }
+
                 int indexLastStep = pathSteps.size() - 1;
                 int indexLastButOneStep = 0;
                 if (indexLastStep > 1) {
                     indexLastButOneStep = indexLastStep - 1;
                 }
+
                 if (!animal.hasSearchTargetBeenFound()) {
                     move(animal, pathSteps.get(indexLastStep));
                 } else {
@@ -64,19 +70,6 @@ public class MoveAnimalsAction extends Action {
     }
 
 
-    private void move(Animal animal, Coordinate finish) {
-        removeEntity(animal);
-        try {
-            worldMap.putEntityInWorld(finish, animal);
-        } catch (OutOfWorldBoundsException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidCoordinateException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidEntityException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void fight(Animal animal, Coordinate targetEntity) {
         if (isEntityRabbit(animal)) {
             fightRabbit(animal, targetEntity);
@@ -84,14 +77,6 @@ public class MoveAnimalsAction extends Action {
             fightBear(animal, targetEntity);
         }
     }
-
-    private void fightRabbit(Animal animal, Coordinate target) {
-        Entity targetEntity = getEntityForCoordinate(target);
-        removeEntityAndDecrement(targetEntity);
-        eat(animal);
-        move(animal, target);
-    }
-
 
     private void fightBear(Animal bear, Coordinate targetEntity) {
         if (isEntityRabbit(getEntityForCoordinate(targetEntity))) {
@@ -112,6 +97,22 @@ public class MoveAnimalsAction extends Action {
         }
     }
 
+
+    private void fightRabbit(Animal animal, Coordinate target) {
+        Entity targetEntity = getEntityForCoordinate(target);
+        removeEntityAndDecrement(targetEntity);
+        eat(animal);
+        move(animal, target);
+    }
+
+
+    private void move(Animal animal, Coordinate finish) {
+        removeEntity(animal);
+
+        worldMap.addEntityInWorld(finish, animal);
+
+    }
+
     private void removeEntityAndDecrement(Entity entity) {
         removeEntity(entity);
         animals.remove(entity);
@@ -128,24 +129,23 @@ public class MoveAnimalsAction extends Action {
     }
 
     private void removeEntity(Entity entity) {
-        try {
-            Coordinate currentCoordinate = worldMap.getCoordinateEntity(entity);
+        if(worldMap.getOptionalCoordinateEntity(entity).isPresent()) {
+            Coordinate currentCoordinate = worldMap.getOptionalCoordinateEntity(entity).get();
             worldMap.removeEntity(currentCoordinate);
-        } catch (OutOfWorldBoundsException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidCoordinateException e) {
-
         }
     }
 
     private Entity getEntityForCoordinate(Coordinate coordinate) {
-        try {
-            return worldMap.getEntity(coordinate);
-        } catch (OutOfWorldBoundsException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidCoordinateException e) {
-            throw new RuntimeException(e);
-        }
+
+        return worldMap.getOptionalEntity(coordinate).get();
+
+//        try {
+//            return worldMap.getEntity(coordinate);
+//        } catch (OutOfWorldBoundsException e) {
+//            throw new RuntimeException(e);
+//        } catch (InvalidCoordinateException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
 }

@@ -2,9 +2,9 @@ package by.darafeyeu.algoritm;
 
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.coordinate.CreatureMove;
-import by.darafeyeu.exception.FreeCell;
-import by.darafeyeu.exception.InvalidCoordinateException;
-import by.darafeyeu.exception.OutOfWorldBoundsException;
+//import by.darafeyeu.exception.FreeCell;
+//import by.darafeyeu.exception.InvalidCoordinateException;
+//import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
 
@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Random;
 
@@ -85,19 +86,26 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
         }
     }
 
+
     private boolean isTarget(Coordinate coordinate) {
-        try {
-            if (super.worldMap.getEntity(coordinate).getClass() == target) {
-                return true;
-            }
-        } catch (FreeCell e) {
-            return false;
-        } catch (OutOfWorldBoundsException e) {
-            return false;
-        } catch (InvalidCoordinateException e) {
-            return false;
-        }
-        return false;
+        Optional<Entity> optionalEntity = super.worldMap.getOptionalEntity(coordinate);
+
+        return (optionalEntity.isPresent() &&
+                optionalEntity.get().getClass() == target);
+
+
+//        try {
+//            if (super.worldMap.getEntity(coordinate).getClass() == target) {
+//                return true;
+//            }
+//        } catch (FreeCell e) {
+//            return false;
+//        } catch (OutOfWorldBoundsException e) {
+//            return false;
+//        } catch (InvalidCoordinateException e) {
+//            return false;
+//        }
+//        return false;
     }
 
     //реализовать в отдельный клас для выдачи хода с рандомным путем
@@ -121,7 +129,7 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
         for (int i = 0; i < optionOfStep; i++) {
             Coordinate step = CreatureMove.values()[i].getCoordinateMove();
             step = step.addStep(currentCell);
-            if (isCellEmptyOrTarget(step, target)) {
+            if (worldMap.isCoordinateInMap(step) && isCellEmptyOrTarget(step, target)) {
                 Coordinate steepAlgorithm = new Coordinate(step);
                 steepAlgorithm.steepCount(currentCell.getStep());
                 neighbours.add(steepAlgorithm);

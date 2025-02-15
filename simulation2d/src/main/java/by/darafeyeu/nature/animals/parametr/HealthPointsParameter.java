@@ -40,9 +40,9 @@ public class HealthPointsParameter {
         return currentHP <= minHP;
     }
 
-    public void getDamage(int attackForAponent) {
-        if ((currentHP - attackForAponent) > minHP) {
-            currentHP = currentHP - attackForAponent;
+    public void getDamage(int attackForOpponent) {
+        if ((currentHP - attackForOpponent) > minHP) {
+            currentHP = currentHP - attackForOpponent;
         } else {
             currentHP = minHP;
         }

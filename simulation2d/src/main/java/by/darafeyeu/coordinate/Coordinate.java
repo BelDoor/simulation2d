@@ -44,6 +44,7 @@ public class Coordinate {
 
     //todo переименнуй
     public Coordinate addStep(Coordinate move) {
+
         return new Coordinate(this.x + move.x,
                 this.y + move.y);
     }

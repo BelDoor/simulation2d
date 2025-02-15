@@ -49,7 +49,7 @@ public abstract class Animal extends Entity {
     }
 
     public void addHP() {
-       hp.addHP();
+        hp.addHP();
     }
 
     public int attackOnDefenseOpponent() {
@@ -57,7 +57,7 @@ public abstract class Animal extends Entity {
     }
 
     public boolean isDead() {
-       return hp.isDead();
+        return hp.isDead();
     }
 
     public boolean checkMyDefense(int damageOnDefense) {

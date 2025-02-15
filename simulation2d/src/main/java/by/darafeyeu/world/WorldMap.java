@@ -1,17 +1,11 @@
 package by.darafeyeu.world;
 
-import by.darafeyeu.exception.FreeCell;
-import by.darafeyeu.exception.InvalidCoordinateException;
-import by.darafeyeu.exception.InvalidEntityException;
-import by.darafeyeu.exception.OutOfWorldBoundsException;
 import by.darafeyeu.random_number.RandomNumber;
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
-import by.darafeyeu.nature.animals.Animal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,21 +43,16 @@ public final class WorldMap {
         }
     }
 
-
-    //todo перекидываем в другой класс
-    //класс который работает с существами и COORDINATE
-    public Coordinate getCoordinateEntity(Entity entity) throws InvalidCoordinateException {
+    public Optional<Coordinate> getOptionalCoordinateEntity(Entity entity)  {
         Set<Map.Entry<Coordinate, Entity>> entryLocationEntityMap = locationEntityMap.entrySet();
 
         for (Map.Entry<Coordinate, Entity> pair : entryLocationEntityMap) {
             if (entity == (pair.getValue())) {
-                return new Coordinate(pair.getKey());
+                return Optional.ofNullable(new Coordinate(pair.getKey()));
             }
         }
-        throw new InvalidCoordinateException("Empty coordinate");
+                return Optional.empty();
     }
-
-    //оставляем: выдать одну сущность
 
     public List<Entity> getEntities() {
         List<Entity> entityList = new ArrayList<>();
@@ -73,56 +62,33 @@ public final class WorldMap {
         return entityList;
     }
 
-    //todo в BreadFirstSearch нужно переделать метод is target так чтоб при пустой координате мы обрабатываои пустой оптинал
-
-    public Entity getEntity(Coordinate currentCoordinate) throws OutOfWorldBoundsException,
-            InvalidCoordinateException, FreeCell {
+    public Optional<Entity> getOptionalEntity(Coordinate currentCoordinate){
         if (isOccupiedCellInWorld(currentCoordinate)) {
-            return locationEntityMap.get(currentCoordinate);
+            return Optional.ofNullable(locationEntityMap.get(currentCoordinate));
         }
-        throw new FreeCell(currentCoordinate);
+        return Optional.ofNullable(null);
     }
 
-    //оставляем тут
-    public void removeEntity(Coordinate currentCoordinate) throws
-            OutOfWorldBoundsException, InvalidCoordinateException {
+    public void removeEntity(Coordinate currentCoordinate){
         if (isOccupiedCellInWorld(currentCoordinate)) {
             locationEntityMap.remove(currentCoordinate);
         }
     }
 
-    //todo мы вставляем сущность
-    //остаеться в классе
-    //todo избавиться от исключение
-    public void putEntityInWorld(Coordinate currentCoordinate, Entity entity) throws InvalidCoordinateException,
-            InvalidEntityException, OutOfWorldBoundsException {
-        checkEntity(entity);
-        if (isFreeCellInWorld(currentCoordinate)) {
+    public boolean addEntityInWorld(Coordinate currentCoordinate, Entity entity){
+        if (checkEntity(entity) && isFreeCellInWorld(currentCoordinate)) {
             locationEntityMap.put(currentCoordinate, entity);
+            return true;
         }
+        return false;
     }
 
-    //todo сделать проверку опшион который вернет  isValidCoordinate
-    private boolean isOccupiedCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
-            OutOfWorldBoundsException {
-        isValidCoordinate(coordinate);
-        if (!locationEntityMap.containsKey(coordinate)) {
-            return false;
-        }
-        return true;
+    public boolean isOccupiedCellInWorld(Coordinate coordinate) {
+        return (isValidCoordinate(coordinate) && locationEntityMap.containsKey(coordinate));
     }
-
-
-    //todo переносим в другой класс
-    // проверяет пуста ли наша координата
-
-    private boolean isFreeCellInWorld(Coordinate coordinate) throws InvalidCoordinateException,
-            OutOfWorldBoundsException {
-        isValidCoordinate(coordinate);
-        if (!isFreeCell(coordinate)) {
-            return false;
-        }
-        return true;
+    
+    private boolean isFreeCellInWorld(Coordinate coordinate) {
+        return isValidCoordinate(coordinate) && isFreeCell(coordinate);
     }
 
 
@@ -132,22 +98,13 @@ public final class WorldMap {
     }
 
 
-    //todo возвращает Optionsl с нулем либо объектом
-    private boolean isValidCoordinate(Coordinate coordinate) throws InvalidCoordinateException, OutOfWorldBoundsException {
-        if (!isCoordinateInMap(checkCoordinate(coordinate))) {
-            throw new OutOfWorldBoundsException("Сoordinate is outside the map boundaries: " + coordinate);
-        }
-        return true;
-    }
-
-
     //клон isValidCoordinate
-    private boolean isValidCoordinateNotException(Coordinate coordinate) {
-        return !isCoordinateInMap(optionalCoordinate(coordinate));
+    private boolean isValidCoordinate(Coordinate coordinate) {
+        return isCoordinateInMap(optionalCoordinate(coordinate));
     }
 
     //todo валидация координаты проверка ее на вход в карту
-    private boolean isCoordinateInMap(Coordinate coordinate) {
+    public boolean isCoordinateInMap(Coordinate coordinate) {
         int height = coordinate.getY();
         int length = coordinate.getX();
         return ((height >= NULL_POINT_FOR_WORLD && height <= this.sizeHeightY) &&
@@ -169,21 +126,16 @@ public final class WorldMap {
                 (length >= NULL_POINT_FOR_WORLD && length <= this.sizeWidthX));
     }
 
-
-    //todo будем возвращать Optional
-    private Coordinate checkCoordinate(Coordinate currentCoordinate) throws InvalidCoordinateException {
-        return Optional.ofNullable(currentCoordinate)
-                .orElseThrow(() -> new InvalidCoordinateException("Empty coordinate"));
-    }
-
     private Optional<Coordinate> optionalCoordinate(Coordinate currentCoordinate) {
         return Optional.ofNullable(currentCoordinate);
     }
 
-    //todo переделать на работу с Optional
-    private Entity checkEntity(Entity entity) throws InvalidEntityException {
-        return Optional.ofNullable(entity)
-                .orElseThrow(() -> new InvalidEntityException("Empty Entity"));
+    private boolean checkEntity(Entity entity) {
+        return optionalEntity(entity).isPresent();
+    }
+
+    private Optional<Entity> optionalEntity(Entity entity) {
+        return Optional.ofNullable(entity);
     }
 
     public int getCountAllCell() {
