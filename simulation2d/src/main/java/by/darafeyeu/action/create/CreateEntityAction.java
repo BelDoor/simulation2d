@@ -1,9 +1,9 @@
 package by.darafeyeu.action.create;
 
 import by.darafeyeu.action.Action;
-//import by.darafeyeu.exception.InvalidCoordinateException;
-//import by.darafeyeu.exception.InvalidEntityException;
-//import by.darafeyeu.exception.OutOfWorldBoundsException;
+
+import by.darafeyeu.coordinate.Coordinate;
+import by.darafeyeu.coordinate.WorkWithCoordinatWorld;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
 
@@ -17,24 +17,26 @@ public class CreateEntityAction extends Action {
     private static final int ROCK_OF_THE_WORLD = 10;
     private static final int GRASS_OF_THE_WORLD = 5;
     private static final int RABBIT_OF_THE_WORLD = 12;
-    private static final int BEAR_OF_THE_WORLD = 85;
+    private static final int BEAR_OF_THE_WORLD = 75;
+
     private static final double FIFTY_PERCENT_OF_THE_NUMBER = 0.5;
     private static final double SEVENTY_PERCENT_OF_THE_NUMBER = 0.7;
     private static final double EIGHTY_PERCENT_OF_THE_NUMBER = 0.8;
 
-    private  Map<String, Integer> maxCountEntity = new HashMap<>();
-    private  Map<String, Double> quantityAddedEntity = new HashMap<>();
+    private Map<String, Integer> maxCountEntity = new HashMap<>();
+    private Map<String, Double> quantityAddedEntity = new HashMap<>();
 
     private Entity entity;
     private Supplier<? extends Entity> entitySupplier;
     private boolean checkCreatedEntityInWorld = false;
 
     {
-        maxCountEntity.put("Rabbit", worldMap.getCountAllCell() / RABBIT_OF_THE_WORLD);
-        maxCountEntity.put("Grass", worldMap.getCountAllCell() / GRASS_OF_THE_WORLD);
-        maxCountEntity.put("Bear", worldMap.getCountAllCell() / BEAR_OF_THE_WORLD);
-        maxCountEntity.put("Tree", worldMap.getCountAllCell() / TREE_OF_THE_WORLD);
-        maxCountEntity.put("Rock", worldMap.getCountAllCell() / ROCK_OF_THE_WORLD);
+        int countAllCell = WorkWithCoordinatWorld.getCountAllCell(worldMap);
+        maxCountEntity.put("Rabbit", countAllCell / RABBIT_OF_THE_WORLD);
+        maxCountEntity.put("Grass", countAllCell / GRASS_OF_THE_WORLD);
+        maxCountEntity.put("Bear", countAllCell / BEAR_OF_THE_WORLD);
+        maxCountEntity.put("Tree", countAllCell / TREE_OF_THE_WORLD);
+        maxCountEntity.put("Rock", countAllCell / ROCK_OF_THE_WORLD);
 
         quantityAddedEntity.put("Rabbit", SEVENTY_PERCENT_OF_THE_NUMBER);
         quantityAddedEntity.put("Grass", FIFTY_PERCENT_OF_THE_NUMBER);
@@ -49,18 +51,15 @@ public class CreateEntityAction extends Action {
         entity.minusCount();
     }
 
-
-
-
     @Override
     public void action() {
         int quantity = quantityEntity();
         for (int i = 0; i < quantity; i++) {
+            Coordinate coordinate = WorkWithCoordinatWorld.emptyRandomCoordinate(worldMap);
 
             createEntity();
-            worldMap.addEntityInWorld(worldMap.emptyRandomCoordinate(), entity);
 
-
+            worldMap.addEntityInWorld(coordinate, entity);
         }
     }
 
@@ -85,7 +84,7 @@ public class CreateEntityAction extends Action {
     }
 
     private boolean checkMinEntity() {
-        return entity.getEntityCount() < maxCount() * FIFTY_PERCENT_OF_THE_NUMBER;
+        return entity.getEntityCount() <= maxCount() * FIFTY_PERCENT_OF_THE_NUMBER;
     }
 
     private int maxCount() {
@@ -93,7 +92,7 @@ public class CreateEntityAction extends Action {
     }
 
     private int countRefreshEntity() {
-        return (int) (maxCount() * quantityAddedEntity.get(nameEntity()));
+        return (int) Math.round(maxCount() * quantityAddedEntity.get(nameEntity()));
     }
 
     private String nameEntity() {
