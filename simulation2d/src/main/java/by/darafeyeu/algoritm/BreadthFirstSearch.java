@@ -2,9 +2,7 @@ package by.darafeyeu.algoritm;
 
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.coordinate.CreatureMove;
-//import by.darafeyeu.exception.FreeCell;
-//import by.darafeyeu.exception.InvalidCoordinateException;
-//import by.darafeyeu.exception.OutOfWorldBoundsException;
+
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.world.WorldMap;
 
@@ -35,16 +33,10 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
         optionOfStep = countOfDirection;
     }
 
-    public BreadthFirstSearch(WorldMap worldMap) {
-        super(worldMap);
-        resetToDefault();
-    }
-
     public List<Coordinate> getPath(Coordinate start, Class<? extends Entity> target, int speed) {
         resetToDefault();
 
         super.target = target;
-        //будем возращать чистый путь, а в животном будем делать шаг на нужноую координату по скорости.
         super.speedAnimal = speed;
         this.currentCell = start;
 
@@ -52,10 +44,11 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
     }
 
     private void resetToDefault() {
-
         Coordinate defaultCell = new Coordinate();
+
         this.randomCoordinate = new ArrayList<>(Arrays.asList(defaultCell));
         this.targetCoordinate = defaultCell;
+
         this.beforeCells = new HashMap<>();
         this.queueCell = new LinkedList<>();
     }
@@ -71,12 +64,12 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
                 break;
             }
             saveRandomCoordinate(currentCell);
-            saveCellNaighbour();
+            saveCellNeighbour();
         }
         return pathToTarget();
     }
 
-    private void saveCellNaighbour() {
+    private void saveCellNeighbour() {
         for (Coordinate cellNeighbour : cellNeighbours(currentCell)) {
             if (beforeCells.containsKey(cellNeighbour)) {
                 continue;
@@ -86,29 +79,13 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
         }
     }
 
-
     private boolean isTarget(Coordinate coordinate) {
         Optional<Entity> optionalEntity = super.worldMap.getOptionalEntity(coordinate);
 
         return (optionalEntity.isPresent() &&
                 optionalEntity.get().getClass() == target);
-
-
-//        try {
-//            if (super.worldMap.getEntity(coordinate).getClass() == target) {
-//                return true;
-//            }
-//        } catch (FreeCell e) {
-//            return false;
-//        } catch (OutOfWorldBoundsException e) {
-//            return false;
-//        } catch (InvalidCoordinateException e) {
-//            return false;
-//        }
-//        return false;
     }
 
-    //реализовать в отдельный клас для выдачи хода с рандомным путем
     private void saveRandomCoordinate(Coordinate currentCell) {
         int steepCurrentCell = currentCell.getStep();
 
@@ -126,12 +103,15 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
 
     private List<Coordinate> cellNeighbours(Coordinate currentCell) {
         List<Coordinate> neighbours = new ArrayList<>();
+
         for (int i = 0; i < optionOfStep; i++) {
             Coordinate step = CreatureMove.values()[i].getCoordinateMove();
             step = step.addStep(currentCell);
+
             if (worldMap.isCoordinateInMap(step) && isCellEmptyOrTarget(step, target)) {
                 Coordinate steepAlgorithm = new Coordinate(step);
                 steepAlgorithm.steepCount(currentCell.getStep());
+
                 neighbours.add(steepAlgorithm);
             }
         }
@@ -148,10 +128,12 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
 
     private List<Coordinate> path(Coordinate behindCell) {
         List<Coordinate> path = new ArrayList<>();
+
         while (beforeCells.get(behindCell) != null) {
             path.add(behindCell);
             behindCell = beforeCells.get(behindCell);
         }
+
         path.add(behindCell);
         Collections.reverse(path);
         return path;
@@ -160,6 +142,7 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
     private Coordinate randomRoad() {
         Random random = new Random();
         int numberRoad = random.nextInt(randomCoordinate.size());
+        
         return randomCoordinate.get(numberRoad);
     }
 
