@@ -106,7 +106,7 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
 
         for (int i = 0; i < optionOfStep; i++) {
             Coordinate step = CreatureMove.values()[i].getCoordinateMove();
-            step = step.addStep(currentCell);
+            step = step.foldCoordinate(currentCell);
 
             if (worldMap.isCoordinateInMap(step) && isCellEmptyOrTarget(step, target)) {
                 Coordinate steepAlgorithm = new Coordinate(step);
@@ -142,7 +142,7 @@ public class BreadthFirstSearch extends AlgorithmSearchPath {
     private Coordinate randomRoad() {
         Random random = new Random();
         int numberRoad = random.nextInt(randomCoordinate.size());
-        
+
         return randomCoordinate.get(numberRoad);
     }
 

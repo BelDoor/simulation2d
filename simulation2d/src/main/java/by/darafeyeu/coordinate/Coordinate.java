@@ -7,7 +7,6 @@ public class Coordinate {
     private final Integer y;
 
     private static int DEFAULT_STEP = -1;
-    private static int COORDINATE_STEP = 0;
     private int step;
 
     @Override
@@ -41,10 +40,7 @@ public class Coordinate {
         return step;
     }
 
-
-    //todo переименнуй
-    public Coordinate addStep(Coordinate move) {
-
+    public Coordinate foldCoordinate(Coordinate move) {
         return new Coordinate(this.x + move.x,
                 this.y + move.y);
     }
