@@ -1,9 +1,7 @@
 package by.darafeyeu.action.move;
 
 import by.darafeyeu.action.Action;
-//import by.darafeyeu.exception.InvalidCoordinateException;
-//import by.darafeyeu.exception.InvalidEntityException;
-//import by.darafeyeu.exception.OutOfWorldBoundsException;
+
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 import by.darafeyeu.nature.animals.Animal;
@@ -30,11 +28,9 @@ public class MoveAnimalsAction extends Action {
             animal.drainEnergyFromAnimal();
 
             if (!animal.isDead()) {
-                //todo убрать ненужные ошибки в world
                 List<Coordinate> pathSteps = null;
-                //todo создать класс для проверке есть ли сущность на карте  взывать метод проверки
-                //todo затем в конструкции иф при ок результате вызывать метод достающий координату
-                if(worldMap.getOptionalCoordinateEntity(animal).isPresent()) {
+
+                if (worldMap.getOptionalCoordinateEntity(animal).isPresent()) {
                     pathSteps = animal.pathSteps(worldMap.getOptionalCoordinateEntity(animal).get());
                 } else {
                     continue;
@@ -52,6 +48,7 @@ public class MoveAnimalsAction extends Action {
                     move(animal, pathSteps.get(indexLastButOneStep));
                     fight(animal, pathSteps.get(indexLastStep));
                 }
+
             } else {
                 removeEntity(animal);
                 animal.minusCount();
@@ -79,20 +76,26 @@ public class MoveAnimalsAction extends Action {
     }
 
     private void fightBear(Animal bear, Coordinate targetEntity) {
+
         if (isEntityRabbit(getEntityForCoordinate(targetEntity))) {
             Rabbit rabbit = (Rabbit) getEntityForCoordinate(targetEntity);
+
             if (rabbit.checkMyDefense(bear.attackOnDefenseOpponent())) {
                 rabbit.getDamage(bear.attackForOpponent());
+
                 if (rabbit.isDead()) {
                     removeEntityAndDecrement(rabbit);
                     eat(bear);
                     move(bear, targetEntity);
                 }
+
             } else {
                 bear.getDamage(rabbit.attackForOpponent());
+
                 if (bear.isDead()) {
                     removeEntityAndDecrement(bear);
                 }
+
             }
         }
     }
@@ -110,11 +113,11 @@ public class MoveAnimalsAction extends Action {
         removeEntity(animal);
 
         worldMap.addEntityInWorld(finish, animal);
-
     }
 
     private void removeEntityAndDecrement(Entity entity) {
         removeEntity(entity);
+
         animals.remove(entity);
         entity.minusCount();
     }
@@ -129,23 +132,14 @@ public class MoveAnimalsAction extends Action {
     }
 
     private void removeEntity(Entity entity) {
-        if(worldMap.getOptionalCoordinateEntity(entity).isPresent()) {
+        if (worldMap.getOptionalCoordinateEntity(entity).isPresent()) {
             Coordinate currentCoordinate = worldMap.getOptionalCoordinateEntity(entity).get();
             worldMap.removeEntity(currentCoordinate);
         }
     }
 
     private Entity getEntityForCoordinate(Coordinate coordinate) {
-
         return worldMap.getOptionalEntity(coordinate).get();
-
-//        try {
-//            return worldMap.getEntity(coordinate);
-//        } catch (OutOfWorldBoundsException e) {
-//            throw new RuntimeException(e);
-//        } catch (InvalidCoordinateException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
 }
