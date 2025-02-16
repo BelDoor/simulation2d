@@ -2,6 +2,7 @@ package by.darafeyeu.nature.animals.parametr;
 
 public class MoveParameter {
     private static final int ZERO_POINT = 0;
+    private static final int ONE_POINT = 1;
 
     protected int energy;
     protected int minusEnergy;
@@ -31,9 +32,9 @@ public class MoveParameter {
 
     public int drainEnergyFromAnimal() {
         if (energy > minEnergy) {
-            return 0;
+            return ZERO_POINT;
         } else {
-            return 1;
+            return ONE_POINT;
         }
     }
 

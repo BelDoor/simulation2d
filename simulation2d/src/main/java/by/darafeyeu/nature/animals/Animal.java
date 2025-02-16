@@ -1,6 +1,5 @@
 package by.darafeyeu.nature.animals;
 
-import by.darafeyeu.algoritm.AlgorithmSearchPath;
 import by.darafeyeu.nature.animals.parametr.HealthPointsParameter;
 import by.darafeyeu.nature.animals.parametr.MoveParameter;
 import by.darafeyeu.nature.animals.parametr.SearchParameter;

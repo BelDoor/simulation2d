@@ -23,10 +23,6 @@ public class HealthPointsParameter {
         this.defensePoint = defensePoint;
     }
 
-    public int getCurrentHP() {
-        return currentHP;
-    }
-
     public void addHP() {
         int plusHP = RandomNumber.d3();
         if ((currentHP + plusHP) <= maxHP) {

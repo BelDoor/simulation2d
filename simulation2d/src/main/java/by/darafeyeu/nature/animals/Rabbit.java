@@ -27,4 +27,5 @@ public class Rabbit extends Animal {
                 new SearchParameter(TARGET_FOOD,algorithm,SPEED_STEP)
         );
     }
+
 }

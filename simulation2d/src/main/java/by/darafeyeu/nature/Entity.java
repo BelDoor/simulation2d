@@ -26,10 +26,4 @@ public abstract class Entity {
         entityCounts.put(this.getClass().getSimpleName(),
                 entityCounts.getOrDefault(this.getClass().getSimpleName(), 0) - 1);
     }
-
-    //шляпа
-    public static boolean checkCreatedEntity(){
-        return entityCounts.size() > 0;
-    }
-
 }

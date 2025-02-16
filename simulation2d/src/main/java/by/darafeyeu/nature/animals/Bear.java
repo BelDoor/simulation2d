@@ -26,6 +26,6 @@ public class Bear extends Animal {
                 new MoveParameter(START_ENERGE, MINUS_ENERGE, MAX_ENERGE, POWER_HIT),
                 new SearchParameter(TARGET_FOOD,algorithm,SPEED_STEP)
         );
-
     }
+
 }
