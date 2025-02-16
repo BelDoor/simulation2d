@@ -20,7 +20,7 @@ public class RandomNumber {
     }
 
     public static int randomParamCoordinate(int size) {
-        return (random.nextInt(size + 1));
+        return (random.nextInt(size + EXCLUDE_ZERO));
     }
 
 }

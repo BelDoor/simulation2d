@@ -11,7 +11,6 @@ import by.darafeyeu.world.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MoveAnimalsAction extends Action {
     List<Animal> animals;
 

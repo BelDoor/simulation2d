@@ -2,6 +2,7 @@ package by.darafeyeu.world;
 
 //import by.darafeyeu.exception.InvalidCoordinateException;
 //import by.darafeyeu.exception.OutOfWorldBoundsException;
+
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
@@ -40,7 +41,7 @@ public class WorldRender {
     }
 
     private void paintCoordinate(Coordinate coordinate) {
-        if (!worldMap.isFreeCell(coordinate)) {
+        if (worldMap.isOccupiedCellInWorld(coordinate)) {
             paintEntity(coordinate);
         } else {
             this.line.append(getSpriteForEmptySquare());
@@ -49,21 +50,13 @@ public class WorldRender {
 
     private void paintEntity(Coordinate coordinate) {
 
-        if(worldMap.getOptionalEntity(coordinate).isPresent()){
+        if (worldMap.getOptionalEntity(coordinate).isPresent()) {
             Entity entity = worldMap.getOptionalEntity(coordinate).get();
             this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
         } else {
             this.line.append(getSpriteForEmptySquare());
         }
 
-//        try {
-//            Entity entity = worldMap.getEntity(coordinate);
-//            this.line.append(getEntitySprite(entity.getClass().getSimpleName()));
-//        } catch (InvalidCoordinateException e) {
-//            this.line.append(getSpriteForEmptySquare());
-//        } catch (OutOfWorldBoundsException e) {
-//            this.line.append(getSpriteForEmptySquare());
-//        }
     }
 
     private String getEntitySprite(String nameEntity) {
