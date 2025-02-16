@@ -20,10 +20,13 @@ public class Simulation {
     private WorldMap worldMap;
     private WorldRender render;
 
+    private static final int ZERO = 0;
     private List<Action> createEntityAction = new ArrayList<>();
     private Action moveAction;
 
-    private int countRound = 0;
+    private int countRound = ZERO;
+    private static final int NUMBER_OF_POSSIBLE_MOVES_RABBIT = 4;
+    private static final int NUMBER_OF_POSSIBLE_MOVES_BEAR = 8;
 
     public Simulation(int length, int height) {
         this.worldMap = new WorldMap(length, height);
@@ -35,8 +38,10 @@ public class Simulation {
                 new CreateEntityAction(worldMap, Tree::new),
                 new CreateEntityAction(worldMap, Grass::new),
                 new CreateEntityAction(worldMap, Rock::new),
-                new CreateEntityAction(worldMap, () -> new Rabbit(new BreadthFirstSearch(worldMap, 4))),
-                new CreateEntityAction(worldMap, () -> new Bear(new BreadthFirstSearch(worldMap, 8)))
+                new CreateEntityAction(worldMap, () -> new Rabbit(new BreadthFirstSearch(worldMap,
+                        NUMBER_OF_POSSIBLE_MOVES_RABBIT))),
+                new CreateEntityAction(worldMap, () -> new Bear(new BreadthFirstSearch(worldMap,
+                        NUMBER_OF_POSSIBLE_MOVES_BEAR)))
         );
 
         addEntity();
