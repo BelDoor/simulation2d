@@ -7,6 +7,11 @@ import java.util.Scanner;
 
 public class Menu {
     private final Scanner scanner = new Scanner(System.in);
+
+    private static final int MIN_SIZE_WORLD = 9;
+    private static final int MAX_SIZE_WORLD = 100;
+    private static final int ZERO = 0;
+
     private static final int START_SIMULATION = 1;
     private static final int ONE_ITERATION = 2;
     private static final int EXIT = 3;
@@ -51,7 +56,7 @@ public class Menu {
                     break;
                 case EXIT:
                     scanner.close();
-                    System.exit(0);
+                    System.exit(ZERO);
                     break;
             }
         }
@@ -61,7 +66,7 @@ public class Menu {
         outPutMessage(ENTER_PAUSE);
         try {
             Thread.sleep(1000);
-            if (System.in.available() > 0) {
+            if (System.in.available() > ZERO) {
                 if (enterNumber(PAUSE_ACTION) == PAUSE_SIMULATION) {
                     return PAUSE_SIMULATION;
                 }
@@ -86,7 +91,7 @@ public class Menu {
 
     private int validationSizeWorld(String message) {
         boolean correct = false;
-        int size = 0;
+        int size = ZERO;
         while (!correct) {
             size = enterNumber(message);
             if (correctSizeMap(size)) {
@@ -95,11 +100,11 @@ public class Menu {
                 outPutMessage(INCORRECT_SIZE_FOR_MAP);
             }
         }
-        return size - 1;
+        return size - START_SIMULATION;
     }
 
     private boolean correctSizeMap(int size) {
-        return (size >= 9 && size <= 100);
+        return (size >= MIN_SIZE_WORLD && size <= MAX_SIZE_WORLD);
     }
 
     private int enterNumber(String message) {
