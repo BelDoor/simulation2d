@@ -5,6 +5,8 @@ import by.darafeyeu.world.WorldMap;
 
 public class WorkWithCoordinatWorld {
 
+    private static final int PLUS_ONE_CELL = 1;
+
     public static Coordinate emptyRandomCoordinate(WorldMap world) {
         while (true) {
             int length = RandomNumber.randomParamCoordinate(world.getSizeLength());
@@ -17,6 +19,6 @@ public class WorkWithCoordinatWorld {
     }
 
     public static int getCountAllCell(WorldMap world) {
-        return (world.getSizeHeightY() + 1) * (world.getSizeLength() + 1);
+        return (world.getSizeHeightY() + PLUS_ONE_CELL) * (world.getSizeLength() + PLUS_ONE_CELL);
     }
 }

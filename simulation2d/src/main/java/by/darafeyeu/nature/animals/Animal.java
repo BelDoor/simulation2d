@@ -26,7 +26,8 @@ public abstract class Animal extends Entity {
     public List<Coordinate> pathSteps(Coordinate start) {
         setTargetCell(false);
 
-        List<Coordinate> path = searchParameter.getAlgorithm().getPath(start, searchParameter.getTargetFood(), searchParameter.getSpeedStep());
+        List<Coordinate> path = searchParameter.getAlgorithm().getPath(start,
+                searchParameter.getTargetFood(), searchParameter.getSpeedStep());
 
         int startIndexCoordinate = 0;
         int stepForSpeedAnimal = searchParameter.getSpeedStep() + 1;
