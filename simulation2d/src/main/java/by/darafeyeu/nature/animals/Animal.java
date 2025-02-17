@@ -48,8 +48,8 @@ public abstract class Animal extends Entity {
         return moveParameter.getPowerHit();
     }
 
-    public void addHP() {
-        hp.addHP();
+    public void regenerationHP() {
+        hp.regenerationHP();
     }
 
     public int attackOnDefenseOpponent() {

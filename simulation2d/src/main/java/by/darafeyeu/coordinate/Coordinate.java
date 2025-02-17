@@ -3,10 +3,12 @@ package by.darafeyeu.coordinate;
 import java.util.Objects;
 
 public class Coordinate {
-    private final Integer x;
-    private final Integer y;
+    private final int x;
+    private final int y;
 
-    private static int DEFAULT_STEP = -1;
+    private static final int DEFAULT_STEP = -1;
+    private static final int PLUS_ONE_ROUND = 1;
+
     private int step;
 
     @Override
@@ -19,7 +21,7 @@ public class Coordinate {
         this.step = DEFAULT_STEP;
     }
 
-    public Coordinate(Integer x, Integer y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -28,11 +30,11 @@ public class Coordinate {
         this(coordinate.x, coordinate.y);
     }
 
-    public Integer getX() {
+    public int getX() {
         return x;
     }
 
-    public Integer getY() {
+    public int getY() {
         return y;
     }
 
@@ -46,7 +48,7 @@ public class Coordinate {
     }
 
     public void steepCount(int step) {
-        this.step = step + 1;
+        this.step = step + PLUS_ONE_ROUND;
     }
 
     @Override

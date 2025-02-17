@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveAnimalsAction extends Action {
+
     List<Animal> animals;
 
     public MoveAnimalsAction(WorldMap worldMap) {
@@ -122,7 +123,7 @@ public class MoveAnimalsAction extends Action {
     }
 
     private void eat(Animal animal) {
-        animal.addHP();
+        animal.regenerationHP();
         animal.restoreEnergyToAnimal();
     }
 

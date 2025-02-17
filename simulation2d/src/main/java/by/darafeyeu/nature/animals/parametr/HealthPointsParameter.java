@@ -23,7 +23,7 @@ public class HealthPointsParameter {
         this.defensePoint = defensePoint;
     }
 
-    public void addHP() {
+    public void regenerationHP() {
         int plusHP = RandomNumber.d3();
         if ((currentHP + plusHP) <= maxHP) {
             currentHP = currentHP + plusHP;
