@@ -1,8 +1,5 @@
 package by.darafeyeu.world;
 
-//import by.darafeyeu.exception.InvalidCoordinateException;
-//import by.darafeyeu.exception.OutOfWorldBoundsException;
-
 import by.darafeyeu.coordinate.Coordinate;
 import by.darafeyeu.nature.Entity;
 
@@ -12,6 +9,7 @@ public class WorldRender {
     private static final int NULL_POINT_FOR_WORLD = 0;
 
     public static final String ANSI_RESET = "\u001B[0m";
+
     public static final String EMPTY_CELL = "🏻";
     public static final String SPRITE_RABBIT = "\uD83D\uDC30";
     public static final String SPRITE_ROCK = "⛰";

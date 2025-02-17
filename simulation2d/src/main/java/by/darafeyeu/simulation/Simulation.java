@@ -21,6 +21,8 @@ public class Simulation {
     private WorldRender render;
 
     private static final int ZERO = 0;
+    private static final int EVERY_TENTH_REPETITION = 10;
+
     private List<Action> createEntityAction = new ArrayList<>();
     private Action moveAction;
 
@@ -60,7 +62,7 @@ public class Simulation {
     }
 
     private void addEntity() {
-        if (countRound % 6 == 0 || countRound == 0) {
+        if (countRound % EVERY_TENTH_REPETITION == ZERO || countRound == ZERO) {
 
             for (Action action : createEntityAction) {
                 action.action();
